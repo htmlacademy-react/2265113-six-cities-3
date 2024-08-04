@@ -22,17 +22,17 @@ export const App = ({cardsCount}: AppScreenProps): JSX.Element => (
         />
         <Route
           path={AppRoute.Login}
+          element={<LoginScreen />}
+        />
+        <Route
+          path={AppRoute.Favorites}
           element={
             <PrivateRoute
               authorizationStatus={AuthorizationStatus.NoAuth}
             >
-              <LoginScreen />
+              <FavoritesScreen />
             </PrivateRoute>
           }
-        />
-        <Route
-          path={AppRoute.Favorites}
-          element={<FavoritesScreen />}
         />
         <Route
           path={AppRoute.Offer}
