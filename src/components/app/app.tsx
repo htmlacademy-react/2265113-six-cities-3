@@ -7,43 +7,51 @@ import { FavoritesScreen } from '../../pages/favorites-screen/favorites-screen';
 import { OfferScreen } from '../../pages/offer-screen/offer-screen';
 import { NotFoundScreen } from '../../pages/not-found-screen/not-found-screen';
 import { PrivateRoute } from './private-route/private-route';
+import { Offers } from '../../types/offers';
 
 type AppScreenProps = {
-  cardsCount: number;
+  offers: Offers;
 }
 
-export const App = ({cardsCount}: AppScreenProps): JSX.Element => (
-  <HelmetProvider>
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path={AppRoute.Main}
-          element={<MainScreen cardsCount={cardsCount} />}
-        />
-        <Route
-          path={AppRoute.Login}
-          element={<LoginScreen />}
-        />
-        <Route
-          path={AppRoute.Favorites}
-          element={
-            <PrivateRoute
-              authorizationStatus={AuthorizationStatus.NoAuth}
-            >
-              <FavoritesScreen />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path={AppRoute.Offer}
-          element={<OfferScreen />}
-        />
-        <Route
-          path="*"
-          element={<NotFoundScreen />}
-        />
-      </Routes>
-    </BrowserRouter>
-  </HelmetProvider>
-);
+export const App = ({offers}: AppScreenProps): JSX.Element => {
+  const favoriteOffers = offers.filter((offer) => offer.isFavorite);
+
+  return (
+    <HelmetProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path={AppRoute.Main}
+            element={
+              <MainScreen offers={offers}/>
+            }
+          />
+          <Route
+            path={AppRoute.Login}
+            element={<LoginScreen />}
+          />
+          <Route
+            path={AppRoute.Favorites}
+            element={
+              <PrivateRoute
+                authorizationStatus={AuthorizationStatus.Auth}
+              >
+                <FavoritesScreen offers={favoriteOffers}/>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={AppRoute.Offer}
+            element={<OfferScreen offers={offers}/>}
+          />
+          <Route
+            path="*"
+            element={<NotFoundScreen />}
+          />
+        </Routes>
+      </BrowserRouter>
+    </HelmetProvider>
+  );
+};
+
 
