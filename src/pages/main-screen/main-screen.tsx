@@ -1,13 +1,14 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Card } from '../../components/card/card';
 import { Logo } from '../../components/logo/logo';
+import { Offers } from '../../types/offers';
+import { OfferList } from '../../components/offer-list/offer-list';
 
 type MainScreenProps = {
-  cardsCount: number;
+  offers: Offers;
 }
 
-export const MainScreen = ({cardsCount}: MainScreenProps): JSX.Element => (
+export const MainScreen = ({offers}: MainScreenProps): JSX.Element => (
   <div className="page page--gray page--main">
     <Helmet>
       <title>Шесть городов. Главная</title>
@@ -97,9 +98,7 @@ export const MainScreen = ({cardsCount}: MainScreenProps): JSX.Element => (
                 <li className="places__option" tabIndex={0}>Top rated first</li>
               </ul>
             </form>
-            <div className="cities__places-list places__list tabs__content">
-              {[...Array(cardsCount).keys()].map((card) => <Card key={card}/>)}
-            </div>
+            <OfferList offers={offers}/>
           </section>
           <div className="cities__right-section">
             <section className="cities__map map"></section>

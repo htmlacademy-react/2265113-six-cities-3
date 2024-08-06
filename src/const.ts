@@ -1,7 +1,3 @@
-export const Setting = {
-  CardsCount: 5
-};
-
 export enum AppRoute {
   Login = '/login',
   Favorites = '/favorites',
@@ -14,3 +10,5 @@ export enum AuthorizationStatus {
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
+
+export const COMMENTS_COUNT: number = 10;
