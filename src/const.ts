@@ -8,7 +8,12 @@ export enum AppRoute {
 export enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
-  Unknown = 'UNKNOWN',
+  Unknown = 'UNKNOWN'
 }
 
 export const COMMENTS_COUNT = 10;
+
+export const UrlMarkers = {
+  DEFAULT: '../public/img/pin.svg',
+  CURRENT: '../public/img/pin-active.svg'
+};
