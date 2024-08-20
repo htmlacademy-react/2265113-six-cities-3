@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Logo } from '../../components/logo/logo';
-import { Offers } from '../../types/offers';
+import { Header } from '../../components/header/header';
+import { Offer } from '../../types/offers';
 import { OfferList } from '../../components/offer-list/offer-list';
 
 type MainScreenProps = {
-  offers: Offers;
+  offers: Offer[];
 }
 
 export const MainScreen = ({offers}: MainScreenProps): JSX.Element => (
@@ -13,32 +13,7 @@ export const MainScreen = ({offers}: MainScreenProps): JSX.Element => (
     <Helmet>
       <title>Шесть городов. Главная</title>
     </Helmet>
-    <header className="header">
-      <div className="container">
-        <div className="header__wrapper">
-          <div className="header__left">
-            <Logo />
-          </div>
-          <nav className="header__nav">
-            <ul className="header__nav-list">
-              <li className="header__nav-item user">
-                <Link className="header__nav-link header__nav-link--profile" to="/">
-                  <div className="header__avatar-wrapper user__avatar-wrapper">
-                  </div>
-                  <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                  <span className="header__favorite-count">3</span>
-                </Link>
-              </li>
-              <li className="header__nav-item">
-                <Link className="header__nav-link" to="/">
-                  <span className="header__signout">Sign out</span>
-                </Link>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
-    </header>
+    <Header />
 
     <main className="page__main page__main--index">
       <h1 className="visually-hidden">Cities</h1>
@@ -46,34 +21,34 @@ export const MainScreen = ({offers}: MainScreenProps): JSX.Element => (
         <section className="locations container">
           <ul className="locations__list tabs__list">
             <li className="locations__item">
-              <a className="locations__item-link tabs__item" href="#">
+              <Link className="locations__item-link tabs__item" to="#">
                 <span>Paris</span>
-              </a>
+              </Link>
             </li>
             <li className="locations__item">
-              <a className="locations__item-link tabs__item" href="#">
+              <Link className="locations__item-link tabs__item" to="#">
                 <span>Cologne</span>
-              </a>
+              </Link>
             </li>
             <li className="locations__item">
-              <a className="locations__item-link tabs__item" href="#">
+              <Link className="locations__item-link tabs__item" to="#">
                 <span>Brussels</span>
-              </a>
+              </Link>
             </li>
             <li className="locations__item">
-              <a className="locations__item-link tabs__item tabs__item--active">
+              <Link className="locations__item-link tabs__item tabs__item--active" to="#">
                 <span>Amsterdam</span>
-              </a>
+              </Link>
             </li>
             <li className="locations__item">
-              <a className="locations__item-link tabs__item" href="#">
+              <Link className="locations__item-link tabs__item" to="#">
                 <span>Hamburg</span>
-              </a>
+              </Link>
             </li>
             <li className="locations__item">
-              <a className="locations__item-link tabs__item" href="#">
+              <Link className="locations__item-link tabs__item" to="#">
                 <span>Dusseldorf</span>
-              </a>
+              </Link>
             </li>
           </ul>
         </section>

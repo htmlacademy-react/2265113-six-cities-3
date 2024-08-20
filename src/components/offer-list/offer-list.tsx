@@ -1,9 +1,9 @@
 import {useState} from 'react';
 import { Card } from '../card/card';
-import { Offers } from '../../types/offers';
+import { Offer } from '../../types/offers';
 
 type OfferListProps = {
-  offers: Offers;
+  offers: Offer[];
 }
 
 export const OfferList = ({ offers }: OfferListProps) => {

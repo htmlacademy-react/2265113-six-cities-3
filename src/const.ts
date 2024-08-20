@@ -11,4 +11,4 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-export const COMMENTS_COUNT: number = 10;
+export const COMMENTS_COUNT = 10;
