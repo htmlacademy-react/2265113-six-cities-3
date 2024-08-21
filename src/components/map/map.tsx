@@ -3,25 +3,25 @@ import { Icon, layerGroup, Marker } from 'leaflet';
 import { useRef, useEffect } from 'react';
 import { useMap } from '../../hooks/use-map';
 import { City, Offer } from '../../types/offers';
-import { UrlMarkers } from '../../const';
+import { UrlMarkers } from '../../types/offers';
 
 type MapProps = {
   city: City;
   points: Offer[];
-  selectedOffer: Offer | undefined;
+  selectedOffer?: Offer;
 }
 
-export const Map = ({city, points, selectedOffer}: MapProps): JSX.Element => {
+const defaultCustomIcon = new Icon({
+  iconUrl: UrlMarkers.DEFAULT
+});
+
+const currentCustomIcon = new Icon({
+  iconUrl: UrlMarkers.CURRENT,
+});
+
+export const Map = ({city, points, selectedOffer}: MapProps) => {
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
-
-  const defaultCustomIcon = new Icon({
-    iconUrl: UrlMarkers.DEFAULT
-  });
-
-  const currentCustomIcon = new Icon({
-    iconUrl: UrlMarkers.CURRENT,
-  });
 
   useEffect(() => {
     if (map) {
@@ -51,7 +51,6 @@ export const Map = ({city, points, selectedOffer}: MapProps): JSX.Element => {
         height: '100%'
       }}
       ref={mapRef}
-    >
-    </div>
+    />
   );
 };

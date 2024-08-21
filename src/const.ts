@@ -13,7 +13,4 @@ export enum AuthorizationStatus {
 
 export const COMMENTS_COUNT = 10;
 
-export const UrlMarkers = {
-  DEFAULT: '../public/img/pin.svg',
-  CURRENT: '../public/img/pin-active.svg'
-};
+

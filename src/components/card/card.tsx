@@ -49,7 +49,7 @@ export const Card = ({offer, onSelect, isActive}: CardProps): JSX.Element => {
             <span className="visually-hidden">{favorite ? 'In bookmarks' : 'To bookmarks'}</span>
           </button>
         </div>
-        < PlaceCardRating rating={offer.rating} status={status}/>
+        <PlaceCardRating rating={offer.rating} status={status} />
         <h2 className="place-card__name">
           <Link to={`/offer/${offer.id}`}>{offer.title}</Link>
         </h2>
