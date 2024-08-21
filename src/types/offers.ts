@@ -21,5 +21,8 @@ export type Offer = {
   isPremium: boolean;
   rating: number;
 };
+export const UrlMarkers = {
+  DEFAULT: 'img/pin.svg',
+  CURRENT: 'img/pin-active.svg'
+};
 
-export type Offers = Offer[];

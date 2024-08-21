@@ -1,57 +1,41 @@
 import {Route, BrowserRouter, Routes} from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { AppRoute, AuthorizationStatus } from '../../const';
-import { MainScreen } from '../../pages/main-screen/main-screen';
-import { LoginScreen } from '../../pages/login-screen/login-screen';
-import { FavoritesScreen } from '../../pages/favorites-screen/favorites-screen';
-import { OfferScreen } from '../../pages/offer-screen/offer-screen';
-import { NotFoundScreen } from '../../pages/not-found-screen/not-found-screen';
+import { AuthorizationStatus } from '../../const';
 import { PrivateRoute } from './private-route/private-route';
-import { Offers } from '../../types/offers';
+import { Offer } from '../../types/offers';
+import { RouteConfig } from '../../types/route-config';
+import { createRoutesConfig } from './routes-config/routes-config';
 
 type AppScreenProps = {
-  offers: Offers;
+  offers: Offer[];
 }
 
 export const App = ({offers}: AppScreenProps): JSX.Element => {
-  const favoriteOffers = offers.filter((offer) => offer.isFavorite);
+  const routes = createRoutesConfig(offers);
+
+  const renderRoute = ({ path, element, private: isPrivate }: RouteConfig) => (
+    <Route
+      key={path}
+      path={path}
+      element={
+        isPrivate ? (
+          <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+            {element}
+          </PrivateRoute>
+        ) : (
+          element
+        )
+      }
+    />
+  );
 
   return (
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
-          <Route
-            path={AppRoute.Main}
-            element={
-              <MainScreen offers={offers}/>
-            }
-          />
-          <Route
-            path={AppRoute.Login}
-            element={<LoginScreen />}
-          />
-          <Route
-            path={AppRoute.Favorites}
-            element={
-              <PrivateRoute
-                authorizationStatus={AuthorizationStatus.Auth}
-              >
-                <FavoritesScreen offers={favoriteOffers}/>
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path={AppRoute.Offer}
-            element={<OfferScreen offers={offers}/>}
-          />
-          <Route
-            path="*"
-            element={<NotFoundScreen />}
-          />
+          {routes.map(renderRoute)}
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
   );
 };
-
-

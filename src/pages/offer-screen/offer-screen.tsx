@@ -1,49 +1,31 @@
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
-import { Logo } from '../../components/logo/logo';
-import { Offer, Offers } from '../../types/offers';
+import { Header } from '../../components/header/header';
+import { Offer } from '../../types/offers';
 import { CommentForm } from '../../components/comment-form/comment-form';
 import { CommentList } from '../../components/comment-list/comment-list';
+import { PlaceCardRating } from '../../components/card/place-card-rating';
+
+const status = true;
 
 type OfferProps = {
-  offers: Offers;
+  offers: Offer[];
 }
 
 export const OfferScreen = ({offers}: OfferProps): JSX.Element => {
   const { id } = useParams();
-  const activeOffer = offers.find((offer) => offer.id === id) as Offer;
+  const activeOffer = offers.find((offer) => offer.id === id);
+
+  if (!activeOffer) {
+    return <div>Offer not found</div>;
+  }
 
   return (
     <div className="page">
       <Helmet>
         <title>Шесть городов. Предложение</title>
       </Helmet>
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <Logo />
-            </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="#">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">3</span>
-                  </a>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       <main className="page__main page__main--offer">
         <section className="offer">
@@ -86,13 +68,7 @@ export const OfferScreen = ({offers}: OfferProps): JSX.Element => {
                   <span className="visually-hidden">To bookmarks</span>
                 </button>
               </div>
-              <div className="offer__rating rating">
-                <div className="offer__stars rating__stars">
-                  <span style={{ width: '80%' }}></span>
-                  <span className="visually-hidden">Rating</span>
-                </div>
-                <span className="offer__rating-value rating__value">{activeOffer.rating}</span>
-              </div>
+              < PlaceCardRating rating={activeOffer.rating} status={status}/>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
                   {activeOffer.type}
@@ -196,12 +172,7 @@ export const OfferScreen = ({offers}: OfferProps): JSX.Element => {
                       <span className="visually-hidden">In bookmarks</span>
                     </button>
                   </div>
-                  <div className="place-card__rating rating">
-                    <div className="place-card__stars rating__stars">
-                      <span style={{ width: '80%' }}></span>
-                      <span className="visually-hidden">Rating</span>
-                    </div>
-                  </div>
+                  < PlaceCardRating rating={4} status={!status}/>
                   <h2 className="place-card__name">
                     <a href="#">Wood and stone place</a>
                   </h2>
@@ -228,12 +199,7 @@ export const OfferScreen = ({offers}: OfferProps): JSX.Element => {
                       <span className="visually-hidden">To bookmarks</span>
                     </button>
                   </div>
-                  <div className="place-card__rating rating">
-                    <div className="place-card__stars rating__stars">
-                      <span style={{ width: '80%' }}></span>
-                      <span className="visually-hidden">Rating</span>
-                    </div>
-                  </div>
+                  < PlaceCardRating rating={4} status={!status}/>
                   <h2 className="place-card__name">
                     <a href="#">Canal View Prinsengracht</a>
                   </h2>
@@ -263,12 +229,7 @@ export const OfferScreen = ({offers}: OfferProps): JSX.Element => {
                       <span className="visually-hidden">To bookmarks</span>
                     </button>
                   </div>
-                  <div className="place-card__rating rating">
-                    <div className="place-card__stars rating__stars">
-                      <span style={{ width: '100%' }}></span>
-                      <span className="visually-hidden">Rating</span>
-                    </div>
-                  </div>
+                  < PlaceCardRating rating={5} status={!status}/>
                   <h2 className="place-card__name">
                     <a href="#">Nice, cozy, warm big bed apartment</a>
                   </h2>

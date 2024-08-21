@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offers';
+import { PlaceCardRating } from './place-card-rating';
+
+const status = false;
 
 type CardProps = {
   offer: Offer;
@@ -46,12 +49,7 @@ export const Card = ({offer, onSelect, isActive}: CardProps): JSX.Element => {
             <span className="visually-hidden">{favorite ? 'In bookmarks' : 'To bookmarks'}</span>
           </button>
         </div>
-        <div className="place-card__rating rating">
-          <div className="place-card__stars rating__stars">
-            <span style={{ width: `${offer.rating * 20}%` }}></span>
-            <span className="visually-hidden">Rating</span>
-          </div>
-        </div>
+        <PlaceCardRating rating={offer.rating} status={status} />
         <h2 className="place-card__name">
           <Link to={`/offer/${offer.id}`}>{offer.title}</Link>
         </h2>
