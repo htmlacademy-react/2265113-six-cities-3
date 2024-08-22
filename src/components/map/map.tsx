@@ -19,6 +19,8 @@ const currentCustomIcon = new Icon({
   iconUrl: UrlMarkers.CURRENT,
 });
 
+const markers: Marker[] = [];
+
 export const Map = ({city, points, selectedOffer}: MapProps) => {
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
@@ -38,9 +40,15 @@ export const Map = ({city, points, selectedOffer}: MapProps) => {
               : defaultCustomIcon
           )
           .addTo(map);
+
+        markers.push(marker);
       });
+
       return () => {
         map.removeLayer(markerLayer);
+        markers.forEach((marker) => {
+          marker.remove();
+        });
       };
     }
   }, [map, points, selectedOffer]);
