@@ -25,7 +25,7 @@ export const Map = ({city, points, selectedOffer}: MapProps) => {
 
   useEffect(() => {
     if (map) {
-      const markerLayer = layerGroup().addTo(map);
+      const markerLayer = layerGroup().clearLayers().addTo(map);
       points.forEach((point) => {
         const marker = new Marker({
           lat: point.location.latitude,
@@ -38,7 +38,10 @@ export const Map = ({city, points, selectedOffer}: MapProps) => {
               : defaultCustomIcon
           )
           .addTo(map);
+
+        markerLayer.addLayer(marker);
       });
+
       return () => {
         map.removeLayer(markerLayer);
       };

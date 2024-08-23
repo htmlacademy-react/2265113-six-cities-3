@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import cn from 'classnames';
 import { Offer } from '../../types/offers';
 import { PlaceCardRating } from './place-card-rating';
 
@@ -9,22 +10,32 @@ type CardProps = {
   offer: Offer;
   onSelect: (selectedId: string | null) => void;
   isActive: boolean;
+  isNear: boolean;
 }
 
-export const Card = ({offer, onSelect, isActive}: CardProps): JSX.Element => {
+export const Card = ({offer, onSelect, isActive, isNear}: CardProps): JSX.Element => {
   const [favorite, setFavorite] = useState(offer.isFavorite);
 
   return (
-    <article className="cities__card place-card"
-      onMouseEnter={() => onSelect(offer.id)}
-      onMouseLeave={() => onSelect(null)}
-      data-active={isActive ? 'true' : undefined}
+    <article className={cn(
+      'place-card',
+      {'cities__card': !isNear},
+      {'near-places__card': isNear}
+    )}
+    onMouseEnter={() => onSelect(offer.id)}
+    onMouseLeave={() => onSelect(null)}
+    data-active={isActive ? 'true' : undefined}
     >
       { offer.isPremium ?
         <div className="place-card__mark">
           <span>Premium</span>
         </div> : '' }
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={cn(
+        'place-card__image-wrapper',
+        {'cities__image-wrapper': !isNear},
+        {'near-places__image-wrapper': isNear}
+      )}
+      >
         <Link to={`/offer/${offer.id}`}>
           <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image"/>
         </Link>
