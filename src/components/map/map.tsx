@@ -19,15 +19,13 @@ const currentCustomIcon = new Icon({
   iconUrl: UrlMarkers.CURRENT,
 });
 
-const markers: Marker[] = [];
-
 export const Map = ({city, points, selectedOffer}: MapProps) => {
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
 
   useEffect(() => {
     if (map) {
-      const markerLayer = layerGroup().addTo(map);
+      const markerLayer = layerGroup().clearLayers().addTo(map);
       points.forEach((point) => {
         const marker = new Marker({
           lat: point.location.latitude,
@@ -41,14 +39,11 @@ export const Map = ({city, points, selectedOffer}: MapProps) => {
           )
           .addTo(map);
 
-        markers.push(marker);
+        markerLayer.addLayer(marker);
       });
 
       return () => {
         map.removeLayer(markerLayer);
-        markers.forEach((marker) => {
-          marker.remove();
-        });
       };
     }
   }, [map, points, selectedOffer]);

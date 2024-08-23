@@ -74,7 +74,7 @@ export const OfferScreen = ({offers}: OfferProps): JSX.Element => {
                   <span className="visually-hidden">To bookmarks</span>
                 </button>
               </div>
-              < PlaceCardRating rating={currentOffer.rating} status={status}/>
+              <PlaceCardRating rating={currentOffer.rating} status={status} />
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
                   {currentOffer.type}
