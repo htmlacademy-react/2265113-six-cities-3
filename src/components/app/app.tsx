@@ -2,15 +2,12 @@ import {Route, BrowserRouter, Routes} from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { AuthorizationStatus } from '../../const';
 import { PrivateRoute } from './private-route/private-route';
-import { Offer } from '../../types/offers';
 import { RouteConfig } from '../../types/route-config';
 import { createRoutesConfig } from './routes-config/routes-config';
+import { store } from '../../store/index';
 
-type AppScreenProps = {
-  offers: Offer[];
-}
-
-export const App = ({offers}: AppScreenProps): JSX.Element => {
+export const App = (): JSX.Element => {
+  const offers = store.getState().offers;
   const routes = createRoutesConfig(offers);
 
   const renderRoute = ({ path, element, private: isPrivate }: RouteConfig) => (

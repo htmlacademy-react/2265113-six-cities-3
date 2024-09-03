@@ -8,6 +8,7 @@ import { CommentList } from '../../components/comment-list/comment-list';
 import { PlaceCardRating } from '../../components/card/place-card-rating';
 import { OfferList } from '../../components/offer-list/offer-list';
 import { Map } from '../../components/map/map';
+import { store } from '../../store/index';
 
 const status = true;
 
@@ -24,7 +25,7 @@ export const OfferScreen = ({offers}: OfferProps): JSX.Element => {
     return <div>Offer not found</div>;
   }
 
-  const nearestOffers = offers.filter((offer) => offer.id !== currentOffer.id);
+  const nearestOffers = offers.filter((offer) => (offer.city.name === store.getState().city.name) && (offer.id !== currentOffer.id));
 
   return (
     <div className="page">
