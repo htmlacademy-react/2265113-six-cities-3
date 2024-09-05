@@ -5,11 +5,11 @@ import { Header } from '../../components/header/header';
 import { Offer, City } from '../../types/offers';
 import { OfferList } from '../../components/offer-list/offer-list';
 import { Map } from '../../components/map/map';
-import { store } from '../../store/index';
 import { CitiesList } from '../../components/cities-list/cities-list';
 import { changeCity } from '../../store/action';
 import { AppRoute } from '../../const';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { selectCurrentCity } from '../../store/selectors';
 
 type MainScreenProps = {
   offers: Offer[];
@@ -18,7 +18,7 @@ type MainScreenProps = {
 export const MainScreen = ({offers}: MainScreenProps): JSX.Element => {
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
 
-  const currentCity = store.getState().city;
+  const currentCity = useAppSelector(selectCurrentCity);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -40,7 +40,7 @@ export const MainScreen = ({offers}: MainScreenProps): JSX.Element => {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <CitiesList onCityClick={citiesListClickHandler} />
+            <CitiesList onCityClick={citiesListClickHandler} currentCity={currentCity} />
           </section>
         </div>
         <div className="cities">

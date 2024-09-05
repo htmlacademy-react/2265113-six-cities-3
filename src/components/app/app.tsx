@@ -4,10 +4,11 @@ import { AuthorizationStatus } from '../../const';
 import { PrivateRoute } from './private-route/private-route';
 import { RouteConfig } from '../../types/route-config';
 import { createRoutesConfig } from './routes-config/routes-config';
-import { store } from '../../store/index';
+import { selectOffers } from '../../store/selectors';
+import { useAppSelector } from '../../hooks';
 
 export const App = (): JSX.Element => {
-  const offers = store.getState().offers;
+  const offers = useAppSelector(selectOffers);
   const routes = createRoutesConfig(offers);
 
   const renderRoute = ({ path, element, private: isPrivate }: RouteConfig) => (
