@@ -8,6 +8,8 @@ import { CommentList } from '../../components/comment-list/comment-list';
 import { PlaceCardRating } from '../../components/card/place-card-rating';
 import { OfferList } from '../../components/offer-list/offer-list';
 import { Map } from '../../components/map/map';
+import { useAppSelector } from '../../hooks';
+import { selectCurrentCity } from '../../store/selectors';
 
 const status = true;
 
@@ -19,12 +21,13 @@ export const OfferScreen = ({offers}: OfferProps): JSX.Element => {
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
   const { id } = useParams();
   const currentOffer = offers.find((offer) => offer.id === id);
+  const currentCity = useAppSelector(selectCurrentCity);
 
   if (!currentOffer) {
     return <div>Offer not found</div>;
   }
 
-  const nearestOffers = offers.filter((offer) => offer.id !== currentOffer.id);
+  const nearestOffers = offers.filter((offer) => (offer.city.name === currentCity.name) && (offer.id !== currentOffer.id));
 
   return (
     <div className="page">

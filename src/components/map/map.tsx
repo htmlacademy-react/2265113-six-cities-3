@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css';
-import { Icon, layerGroup, Marker } from 'leaflet';
+import { Icon, layerGroup, Marker, LatLng } from 'leaflet';
 import { useRef, useEffect } from 'react';
 import { useMap } from '../../hooks/use-map';
 import { City, Offer } from '../../types/offers';
@@ -40,13 +40,14 @@ export const Map = ({city, points, selectedOffer}: MapProps) => {
           .addTo(map);
 
         markerLayer.addLayer(marker);
+        map.setView(new LatLng(city.location.latitude, city.location.longitude), city.location.zoom);
       });
 
       return () => {
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, points, selectedOffer]);
+  }, [map, points, selectedOffer, city]);
 
   return (
     <div
