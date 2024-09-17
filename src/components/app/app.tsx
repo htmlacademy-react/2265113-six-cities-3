@@ -6,10 +6,18 @@ import { RouteConfig } from '../../types/route-config';
 import { createRoutesConfig } from './routes-config/routes-config';
 import { selectOffers } from '../../store/selectors';
 import { useAppSelector } from '../../hooks';
+import { Loader } from '../loader/loader';
 
 export const App = (): JSX.Element => {
   const offers = useAppSelector(selectOffers);
   const routes = createRoutesConfig(offers);
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+
+  if (isOffersDataLoading) {
+    return (
+      <Loader />
+    );
+  }
 
   const renderRoute = ({ path, element, private: isPrivate }: RouteConfig) => (
     <Route
