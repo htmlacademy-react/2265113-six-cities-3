@@ -1,8 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { Cities, Sorts } from '../const.ts';
-import { offers } from '../mocks/offers.ts';
+import { Cities, Sorts, AuthorizationStatus } from '../const.ts';
 import { City, Offer } from '../types/offers.ts';
-import { changeCity, selectOffers, changeSort, toggleSortsMenu, resetSort } from './action.ts';
+import { changeCity, selectOffers, changeSort, toggleSortsMenu, resetSort, loadOffers, requireAuthorization, setOffersDataLoadingStatus } from './action.ts';
 import { sortOffers } from '../utils/sort.ts';
 
 type State = {
@@ -10,13 +9,17 @@ type State = {
   offers: Offer[];
   sortOffers: string;
   isFiltersOpen: boolean;
+  authorizationStatus: AuthorizationStatus;
+  isOffersDataLoading: boolean;
 };
 
 const initialState: State = {
   city: Cities.PARIS,
-  offers: offers,
+  offers: [],
   sortOffers: Sorts.POPULAR,
-  isFiltersOpen: false
+  isFiltersOpen: false,
+  authorizationStatus: AuthorizationStatus.Unknown,
+  isOffersDataLoading: false
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -29,12 +32,21 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(changeSort, (state, action) => {
       state.sortOffers = action.payload;
-      state.offers = sortOffers[action.payload]([...offers]);
+      state.offers = sortOffers[action.payload]([...state.offers]);
     })
     .addCase(toggleSortsMenu, (state) => {
       state.isFiltersOpen = !state.isFiltersOpen;
     })
     .addCase(resetSort, (state) => {
       state.sortOffers = Sorts.POPULAR;
+    })
+    .addCase(loadOffers, (state, action) => {
+      state.offers = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
+    })
+    .addCase(setOffersDataLoadingStatus, (state, action) => {
+      state.isOffersDataLoading = action.payload;
     });
 });

@@ -33,7 +33,7 @@ export const Map = ({city, points, selectedOffer}: MapProps) => {
         });
         marker
           .setIcon(
-            selectedOffer !== undefined && point.title === selectedOffer.title
+            selectedOffer !== undefined && point.id === selectedOffer.id
               ? currentCustomIcon
               : defaultCustomIcon
           )
