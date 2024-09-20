@@ -1,14 +1,16 @@
-import {Route, BrowserRouter, Routes} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { AuthorizationStatus } from '../../const';
 import { PrivateRoute } from './private-route/private-route';
 import { RouteConfig } from '../../types/route-config';
 import { createRoutesConfig } from './routes-config/routes-config';
 import { selectOffers } from '../../store/selectors';
 import { useAppSelector } from '../../hooks';
 import { Loader } from '../loader/loader';
+import { HistoryRouter } from '../history-route/history-route';
+import { browserHistory } from '../../browser-history';
 
 export const App = (): JSX.Element => {
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const offers = useAppSelector(selectOffers);
   const routes = createRoutesConfig(offers);
   const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
@@ -25,7 +27,7 @@ export const App = (): JSX.Element => {
       path={path}
       element={
         isPrivate ? (
-          <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+          <PrivateRoute authorizationStatus={authorizationStatus}>
             {element}
           </PrivateRoute>
         ) : (
@@ -37,11 +39,11 @@ export const App = (): JSX.Element => {
 
   return (
     <HelmetProvider>
-      <BrowserRouter>
+      <HistoryRouter history={browserHistory}>
         <Routes>
           {routes.map(renderRoute)}
         </Routes>
-      </BrowserRouter>
+      </HistoryRouter>
     </HelmetProvider>
   );
 };
