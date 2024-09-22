@@ -5,6 +5,7 @@ import { Header } from '../../components/header/header';
 import { Sort } from '../../components/sort/sort';
 import { Offer, City } from '../../types/offers';
 import { OfferList } from '../../components/offer-list/offer-list';
+import { OfferListEmpty } from '../../components/offer-list/offer-list-empty';
 import { Map } from '../../components/map/map';
 import { CitiesList } from '../../components/cities-list/cities-list';
 import { changeCity, resetSort } from '../../store/action';
@@ -46,23 +47,29 @@ export const MainScreen = ({offers}: MainScreenProps): JSX.Element => {
           </section>
         </div>
         <div className="cities">
-          <div className="cities__places-container container">
-            <section className="cities__places places">
-              <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offersByCity.length} places to stay in {currentCity.name}</b>
-              <Sort />
-              <OfferList offers={offersByCity} activeOfferId={activeOfferId} setActiveOfferId={setActiveOfferId} isNear={false} />
-            </section>
-            <div className="cities__right-section">
-              <section className="cities__map map">
-                <Map
-                  city={currentCity}
-                  points={offersByCity}
-                  selectedOffer={offers.find((offer) => offer.id === activeOfferId)}
-                />
-              </section>
-            </div>
-          </div>
+          {
+            offersByCity.length === 0
+              ? <OfferListEmpty currentCity={currentCity}/>
+              : (
+                <div className="cities__places-container container">
+                  <section className="cities__places places">
+                    <h2 className="visually-hidden">Places</h2>
+                    <b className="places__found">{offersByCity.length} places to stay in {currentCity.name}</b>
+                    <Sort />
+                    <OfferList offers={offersByCity} activeOfferId={activeOfferId} setActiveOfferId={setActiveOfferId} isNear={false} />
+                  </section>
+                  <div className="cities__right-section">
+                    <section className="cities__map map">
+                      <Map
+                        city={currentCity}
+                        points={offersByCity}
+                        selectedOffer={offers.find((offer) => offer.id === activeOfferId)}
+                      />
+                    </section>
+                  </div>
+                </div>
+              )
+          }
         </div>
       </main>
     </div>
