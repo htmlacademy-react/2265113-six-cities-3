@@ -11,3 +11,9 @@ export type Comment = {
   comment: string;
   rating: number;
 };
+
+export type CommentToSend = {
+  id: string;
+  comment: string;
+  rating: number;
+};

@@ -4,8 +4,13 @@ import { PlaceCardRating } from '../card/place-card-rating';
 
 const status = false;
 
-export const FavoriteCard = ({ offer }: { offer: Offer }) => (
-  <article className="favorites__card place-card" key={offer.id}>
+type FavoriteCardProps = {
+  offer: Offer;
+  onOfferClickHandler: (offer: Offer) => void;
+}
+
+export const FavoriteCard = ({ offer, onOfferClickHandler }: FavoriteCardProps) => (
+  <article className="favorites__card place-card" key={offer.id} onClick={() => onOfferClickHandler(offer)}>
     { offer.isPremium ?
       <div className="place-card__mark">
         <span>Premium</span>

@@ -11,6 +11,8 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN'
 }
 
+export const MIN_COMMENTS_COUNT = 0;
+
 export const COMMENTS_COUNT = 10;
 
 export const Cities = {

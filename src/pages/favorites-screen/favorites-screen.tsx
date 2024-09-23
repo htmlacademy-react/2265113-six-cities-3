@@ -3,12 +3,15 @@ import { Link } from 'react-router-dom';
 import { Header } from '../../components/header/header';
 import { Offer } from '../../types/offers';
 import { GroupedOffers } from '../../components/grouped-offers/grouped-offers';
+import { useAppSelector } from '../../hooks';
+import { selectFavoriteOffers } from '../../store/selectors';
 
 type FavoritesScreenProps = {
-  offers: Offer[];
+  onOfferClickHandler: (Offer: Offer) => void;
 }
 
-export const FavoritesScreen = ({offers}: FavoritesScreenProps): JSX.Element => {
+export const FavoritesScreen = ({onOfferClickHandler}: FavoritesScreenProps): JSX.Element => {
+  const offers = useAppSelector(selectFavoriteOffers);
   const groupedOffers = offers.reduce((acc, offer) => {
     const cityName = offer.city.name;
     (acc[cityName] ||= []).push(offer);
@@ -26,7 +29,7 @@ export const FavoritesScreen = ({offers}: FavoritesScreenProps): JSX.Element => 
         <div className="page__favorites-container container">
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
-            <GroupedOffers groupedOffers={groupedOffers} />
+            <GroupedOffers groupedOffers={groupedOffers} onOfferClickHandler={onOfferClickHandler} />
           </section>
         </div>
       </main>

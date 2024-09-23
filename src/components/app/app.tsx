@@ -8,12 +8,24 @@ import { useAppSelector } from '../../hooks';
 import { Loader } from '../loader/loader';
 import { HistoryRouter } from '../history-route/history-route';
 import { browserHistory } from '../../browser-history';
+import { selectAuthorizationStatus, selectIsOffersDataLoading } from '../../store/selectors';
+import { useAppDispatch } from '../../hooks';
+import { fetchCurrentOfferAction, fetchCommentsAction, fetchNearestOfferAction } from '../../store/api-actions';
+import { Offer } from '../../types/offers';
 
 export const App = (): JSX.Element => {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const dispatch = useAppDispatch();
+
+  const offerClickHandler = (currentOffer: Offer) => {
+    dispatch(fetchCurrentOfferAction(currentOffer));
+    dispatch(fetchCommentsAction(currentOffer));
+    dispatch(fetchNearestOfferAction(currentOffer));
+  };
+
+  const authorizationStatus = useAppSelector(selectAuthorizationStatus);
   const offers = useAppSelector(selectOffers);
-  const routes = createRoutesConfig(offers);
-  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+  const routes = createRoutesConfig(offers, offerClickHandler);
+  const isOffersDataLoading = useAppSelector(selectIsOffersDataLoading);
 
   if (isOffersDataLoading) {
     return (

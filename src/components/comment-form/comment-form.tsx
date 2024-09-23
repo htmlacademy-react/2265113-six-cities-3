@@ -1,21 +1,59 @@
-import React, {useState} from 'react';
+import React, { useState, FormEvent, ChangeEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { postCommentAction } from '../../store/api-actions';
+import { selectCurrentOffer } from '../../store/selectors';
+import { CommentToSend } from '../../types/comments';
+import { AppRoute } from '../../const';
+import { fetchCommentsAction } from '../../store/api-actions';
 
 export const CommentForm = () => {
+  const currentOffer = useAppSelector(selectCurrentOffer);
   const [formData, setFormData] = useState({
-    rating: '',
-    comment: ''
-  });
+    comment: '',
+    rating: 0,
+    id: currentOffer?.id
+  } as CommentToSend);
 
-  const onInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const {name, value} = event.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const inputStarsCountChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => {
+    const value = Number(evt.target.value);
+    if (currentOffer) {
+      setFormData({
+        ...formData,
+        rating: value
+      });
+    }
+  };
+
+  const textareaChangeHandler = (evt: ChangeEvent<HTMLTextAreaElement>) => {
+    const {value} = evt.target;
+    if (currentOffer) {
+      setFormData({
+        ...formData,
+        comment: value
+      });
+    }
+  };
+
+  const formSubmitHandler = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    dispatch(postCommentAction(formData));
+    if (currentOffer) {
+      dispatch(fetchCommentsAction(currentOffer));
+      navigate(`${AppRoute.Offer}${currentOffer.id}`);
+      setFormData({
+        ...formData,
+        comment: '',
+        rating: 0
+      });
+    }
   };
 
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form className="reviews__form form" action="#" method="post" onSubmit={formSubmitHandler}>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         {[5, 4, 3, 2, 1].map((value) => (
@@ -26,8 +64,8 @@ export const CommentForm = () => {
               value={value}
               id={`${value}-stars`}
               type="radio"
-              onChange={onInputChange}
-              checked={formData.rating === value.toString()}
+              onChange={inputStarsCountChangeHandler}
+              checked={formData.rating === value}
               key={`input-${value}`}
             />
             <label
@@ -46,10 +84,10 @@ export const CommentForm = () => {
       <textarea
         className="reviews__textarea form__textarea"
         id="review"
-        name="review"
+        name="comment"
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={formData.comment}
-        onChange={onInputChange}
+        onChange={textareaChangeHandler}
         minLength={50}
         maxLength={300}
       >
@@ -62,7 +100,7 @@ export const CommentForm = () => {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={formData.rating === '' || formData.comment.length < 50 || formData.comment.length > 300}
+          disabled={formData.rating === 0 || formData.comment.length < 50 || formData.comment.length > 300}
         >
           Submit
         </button>
