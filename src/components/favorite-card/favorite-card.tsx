@@ -10,7 +10,7 @@ type FavoriteCardProps = {
 }
 
 export const FavoriteCard = ({ offer, onOfferClickHandler }: FavoriteCardProps) => (
-  <article className="favorites__card place-card" key={offer.id} onClick={() => onOfferClickHandler(offer)}>
+  <article className="favorites__card place-card" key={offer.id} onClick={(evt) => onOfferClickHandler({offer, evt})}>
     { offer.isPremium ?
       <div className="place-card__mark">
         <span>Premium</span>

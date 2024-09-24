@@ -45,7 +45,7 @@ export const Card = ({offer, onSelect, isActive, onOfferClickHandler, isNear}: C
     )}
     onMouseEnter={() => onSelect(offer.id)}
     onMouseLeave={() => onSelect(null)}
-    onClick={() => onOfferClickHandler(offer)}
+    onClick={(evt) => onOfferClickHandler({offer, evt})}
     data-active={isActive ? 'true' : undefined}
     >
       { offer.isPremium ?

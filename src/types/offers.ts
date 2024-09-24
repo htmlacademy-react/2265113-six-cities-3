@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { MouseEvent } from 'react';
 
 export type Location = {
   latitude: number;
@@ -46,9 +46,7 @@ export type CurrentOffer = Offer & {
 
 export type OfferClickHandlerProps = {
   offer: Offer;
-  evt: (ChangeEvent<HTMLInputElement>);
+  evt: MouseEvent<HTMLElement>;
 }
 
-export type OnOfferClickHandlerProps = {
-  onOfferClickHandler: ({offer, evt}: OfferClickHandlerProps) => void;
-};
+export type OnOfferClickHandlerProps = ({offer, evt}: OfferClickHandlerProps) => void;
