@@ -20,6 +20,7 @@ type CardProps = {
 
 export const Card = ({offer, onSelect, isActive, onOfferClickHandler, isNear}: CardProps): JSX.Element => {
   const [favoriteStatus, setFavoriteStatus] = useState<boolean>(offer.isFavorite);
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);
   const dispatch = useAppDispatch();
@@ -27,6 +28,7 @@ export const Card = ({offer, onSelect, isActive, onOfferClickHandler, isNear}: C
 
   const favoriteButtonClickHandler = () => {
     if (authorizationStatus === AuthorizationStatus.Auth) {
+      setIsUpdating(true);
       dispatch(updateOfferFavoriteStatusAction({id: offer.id, favoriteStatus}));
       setFavoriteStatus(!favoriteStatus);
       dispatch(fetchFavoriteOffersAction);
@@ -35,6 +37,7 @@ export const Card = ({offer, onSelect, isActive, onOfferClickHandler, isNear}: C
     } else {
       navigate(AppRoute.Login);
     }
+    setIsUpdating(false);
   };
 
   return (
@@ -70,7 +73,7 @@ export const Card = ({offer, onSelect, isActive, onOfferClickHandler, isNear}: C
           </div>
           <button className={favoriteStatus ?
             'place-card__bookmark-button button place-card__bookmark-button--active button'
-            : 'place-card__bookmark-button button'} type="button"
+            : 'place-card__bookmark-button button'} type="button" disabled={isUpdating}
           onClick={(evt) => {
             evt.stopPropagation();
             favoriteButtonClickHandler();
