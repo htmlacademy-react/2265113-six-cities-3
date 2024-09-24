@@ -71,7 +71,8 @@ export const Card = ({offer, onSelect, isActive, onOfferClickHandler, isNear}: C
           <button className={favoriteStatus ?
             'place-card__bookmark-button button place-card__bookmark-button--active button'
             : 'place-card__bookmark-button button'} type="button"
-          onClick={() => {
+          onClick={(evt) => {
+            evt.stopPropagation();
             favoriteButtonClickHandler();
           }}
           >
