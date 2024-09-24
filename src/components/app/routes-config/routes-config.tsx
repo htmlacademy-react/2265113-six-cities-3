@@ -23,7 +23,7 @@ export const createRoutesConfig = (offers: Offer[], offerClickHandler: OnOfferCl
   },
   {
     path: AppRoute.Offer,
-    element: <OfferScreen offers={offers} onOfferClickHandler={offerClickHandler} />,
+    element: <OfferScreen onOfferClickHandler={offerClickHandler} />,
   },
   {
     path: '*',

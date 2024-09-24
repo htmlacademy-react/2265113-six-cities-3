@@ -2,27 +2,37 @@ import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { Header } from '../../components/header/header';
-import { Offer, OnOfferClickHandlerProps } from '../../types/offers';
+import { OnOfferClickHandlerProps } from '../../types/offers';
 import { CommentForm } from '../../components/comment-form/comment-form';
 import { CommentList } from '../../components/comment-list/comment-list';
 import { PlaceCardRating } from '../../components/card/place-card-rating';
 import { OfferList } from '../../components/offer-list/offer-list';
 import { Map } from '../../components/map/map';
-import { useAppSelector } from '../../hooks';
-import { selectCurrentOffer, selectAuthorizationStatus, selectNearestOffers } from '../../store/selectors';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { fetchCurrentOfferAction, fetchCommentsAction, fetchNearestOfferAction } from '../../store/api-actions';
+import { selectCurrentOffer, selectAuthorizationStatus, selectNearestOffers, selectOffers } from '../../store/selectors';
 import { AuthorizationStatus, ImagesCount } from '../../const';
 
 const status = true;
 
 type OfferProps = {
-  offers: Offer[];
   onOfferClickHandler: OnOfferClickHandlerProps;
 }
 
-export const OfferScreen = ({offers, onOfferClickHandler}: OfferProps): JSX.Element => {
+export const OfferScreen = ({onOfferClickHandler}: OfferProps): JSX.Element => {
+  const offers = useAppSelector(selectOffers);
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
   const { id } = useParams();
+  const dispatch = useAppDispatch();
+  const curOffer = offers.find((elem) => elem.id === id);
   const currentOffer = useAppSelector(selectCurrentOffer);
+
+  if (curOffer && !currentOffer) {
+    dispatch(fetchCurrentOfferAction(curOffer));
+    dispatch(fetchCommentsAction(curOffer));
+    dispatch(fetchNearestOfferAction(curOffer));
+  }
+
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);
   const nearestOffers = useAppSelector(selectNearestOffers).slice(0, 3);
 
