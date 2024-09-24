@@ -10,11 +10,9 @@ import { OfferList } from '../../components/offer-list/offer-list';
 import { Map } from '../../components/map/map';
 import { useAppSelector } from '../../hooks';
 import { selectCurrentOffer, selectAuthorizationStatus, selectNearestOffers } from '../../store/selectors';
-import { AuthorizationStatus } from '../../const';
+import { AuthorizationStatus, ImagesCount } from '../../const';
 
 const status = true;
-const MIN_IMAGES = 0;
-const MAX_IMAGES = 6;
 
 type OfferProps = {
   offers: Offer[];
@@ -43,7 +41,7 @@ export const OfferScreen = ({offers, onOfferClickHandler}: OfferProps): JSX.Elem
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {currentOffer.images.slice(MIN_IMAGES, MAX_IMAGES).map((image) => (
+              {currentOffer.images.slice(ImagesCount.MIN_IMAGES, ImagesCount.MAX_IMAGES).map((image) => (
                 <div className="offer__image-wrapper" key={id + image}>
                   <img className="offer__image" src={image} alt="Photo studio" />
                 </div>

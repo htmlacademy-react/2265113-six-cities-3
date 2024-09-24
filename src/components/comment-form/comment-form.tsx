@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { postCommentAction } from '../../store/api-actions';
 import { selectCurrentOffer } from '../../store/selectors';
 import { CommentToSend } from '../../types/comments';
-import { AppRoute } from '../../const';
+import { AppRoute, CommentLength } from '../../const';
 import { fetchCommentsAction } from '../../store/api-actions';
 
 export const CommentForm = () => {
@@ -17,6 +17,8 @@ export const CommentForm = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const isDisabled = formData.rating === 0 || formData.comment.length < CommentLength.MIN_LENGTH || formData.comment.length > CommentLength.MAX_LENGTH;
 
   const inputStarsCountChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => {
     const value = Number(evt.target.value);
@@ -41,15 +43,18 @@ export const CommentForm = () => {
   const formSubmitHandler = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     dispatch(postCommentAction(formData));
-    if (currentOffer) {
-      dispatch(fetchCommentsAction(currentOffer));
-      navigate(`${AppRoute.Offer}${currentOffer.id}`);
-      setFormData({
-        ...formData,
-        comment: '',
-        rating: 0
-      });
+
+    if (!currentOffer) {
+      return;
     }
+
+    dispatch(fetchCommentsAction(currentOffer));
+    navigate(`${AppRoute.Offer}${currentOffer.id}`);
+    setFormData({
+      ...formData,
+      comment: '',
+      rating: 0
+    });
   };
 
   return (
@@ -88,8 +93,8 @@ export const CommentForm = () => {
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={formData.comment}
         onChange={textareaChangeHandler}
-        minLength={50}
-        maxLength={300}
+        minLength={CommentLength.MIN_LENGTH}
+        maxLength={CommentLength.MAX_LENGTH}
       >
       </textarea>
       <div className="reviews__button-wrapper">
@@ -100,7 +105,7 @@ export const CommentForm = () => {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={formData.rating === 0 || formData.comment.length < 50 || formData.comment.length > 300}
+          disabled={isDisabled}
         >
           Submit
         </button>
