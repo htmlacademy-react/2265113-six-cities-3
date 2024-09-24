@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import cn from 'classnames';
-import { Offer } from '../../types/offers';
+import { Offer, OnOfferClickHandlerProps } from '../../types/offers';
 import { PlaceCardRating } from './place-card-rating';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { updateOfferFavoriteStatusAction, fetchFavoriteOffersAction, fetchOffersAction } from '../../store/api-actions';
@@ -14,7 +14,7 @@ type CardProps = {
   offer: Offer;
   onSelect: (selectedId: string | null) => void;
   isActive: boolean;
-  onOfferClickHandler: (Offer: Offer) => void;
+  onOfferClickHandler: OnOfferClickHandlerProps;
   isNear: boolean;
 }
 

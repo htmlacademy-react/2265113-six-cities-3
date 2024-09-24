@@ -1,13 +1,13 @@
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { Header } from '../../components/header/header';
-import { Offer } from '../../types/offers';
+import { Offer, OnOfferClickHandlerProps } from '../../types/offers';
 import { GroupedOffers } from '../../components/grouped-offers/grouped-offers';
 import { useAppSelector } from '../../hooks';
 import { selectFavoriteOffers } from '../../store/selectors';
 
 type FavoritesScreenProps = {
-  onOfferClickHandler: (Offer: Offer) => void;
+  onOfferClickHandler: OnOfferClickHandlerProps;
 }
 
 export const FavoritesScreen = ({onOfferClickHandler}: FavoritesScreenProps): JSX.Element => {

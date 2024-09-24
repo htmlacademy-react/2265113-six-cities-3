@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { Header } from '../../components/header/header';
-import { Offer } from '../../types/offers';
+import { Offer, OnOfferClickHandlerProps } from '../../types/offers';
 import { CommentForm } from '../../components/comment-form/comment-form';
 import { CommentList } from '../../components/comment-list/comment-list';
 import { PlaceCardRating } from '../../components/card/place-card-rating';
@@ -18,7 +18,7 @@ const MAX_IMAGES = 6;
 
 type OfferProps = {
   offers: Offer[];
-  onOfferClickHandler: (Offer: Offer) => void;
+  onOfferClickHandler: OnOfferClickHandlerProps;
 }
 
 export const OfferScreen = ({offers, onOfferClickHandler}: OfferProps): JSX.Element => {

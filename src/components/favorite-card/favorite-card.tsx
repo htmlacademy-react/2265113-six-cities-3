@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
-import { Offer } from '../../types/offers';
+import { Offer, OnOfferClickHandlerProps } from '../../types/offers';
 import { PlaceCardRating } from '../card/place-card-rating';
 
 const status = false;
 
 type FavoriteCardProps = {
   offer: Offer;
-  onOfferClickHandler: (offer: Offer) => void;
+  onOfferClickHandler: OnOfferClickHandlerProps;
 }
 
 export const FavoriteCard = ({ offer, onOfferClickHandler }: FavoriteCardProps) => (

@@ -1,9 +1,9 @@
 import { FavoritesList } from '../favorites-list/favorites-list';
-import { Offer } from '../../types/offers';
+import { Offer, OnOfferClickHandlerProps } from '../../types/offers';
 
 type GroupedOffersProps = {
   groupedOffers: Record<string, Offer[]>;
-  onOfferClickHandler: (offer: Offer) => void;
+  onOfferClickHandler: OnOfferClickHandlerProps;
 }
 
 export const GroupedOffers = ({ groupedOffers, onOfferClickHandler }: GroupedOffersProps) => (

@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
-import { Offer } from '../../types/offers';
+import { Offer, OnOfferClickHandlerProps } from '../../types/offers';
 import { FavoriteCard } from '../favorite-card/favorite-card';
 
 type FavoritesListProps = {
   city: string;
   offers: Offer[];
-  onOfferClickHandler: (offer: Offer) => void;
+  onOfferClickHandler: OnOfferClickHandlerProps;
 }
 
 

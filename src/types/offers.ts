@@ -1,3 +1,5 @@
+import { ChangeEvent } from 'react';
+
 export type Location = {
   latitude: number;
   longitude: number;
@@ -40,4 +42,13 @@ export type CurrentOffer = Offer & {
   host: Host;
   bedrooms: number;
   maxAdults: number;
+};
+
+export type OfferClickHandlerProps = {
+  offer: Offer;
+  evt: (ChangeEvent<HTMLInputElement>);
+}
+
+export type OnOfferClickHandlerProps = {
+  onOfferClickHandler: ({offer, evt}: OfferClickHandlerProps) => void;
 };

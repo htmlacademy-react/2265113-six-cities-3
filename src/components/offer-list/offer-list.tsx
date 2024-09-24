@@ -1,12 +1,12 @@
 import cn from 'classnames';
 import { Card } from '../card/card';
-import { Offer } from '../../types/offers';
+import { Offer, OnOfferClickHandlerProps } from '../../types/offers';
 
 type OfferListProps = {
   offers: Offer[];
   activeOfferId: string | null;
   setActiveOfferId: (selectedId: string | null) => void;
-  onOfferClickHandler: (Offer: Offer) => void;
+  onOfferClickHandler: OnOfferClickHandlerProps;
   isNear: boolean;
 }
 

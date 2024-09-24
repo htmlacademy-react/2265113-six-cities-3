@@ -11,15 +11,16 @@ import { browserHistory } from '../../browser-history';
 import { selectAuthorizationStatus, selectIsOffersDataLoading } from '../../store/selectors';
 import { useAppDispatch } from '../../hooks';
 import { fetchCurrentOfferAction, fetchCommentsAction, fetchNearestOfferAction } from '../../store/api-actions';
-import { Offer } from '../../types/offers';
+import { OfferClickHandlerProps} from '../../types/offers';
 
 export const App = (): JSX.Element => {
   const dispatch = useAppDispatch();
 
-  const offerClickHandler = (currentOffer: Offer) => {
-    dispatch(fetchCurrentOfferAction(currentOffer));
-    dispatch(fetchCommentsAction(currentOffer));
-    dispatch(fetchNearestOfferAction(currentOffer));
+  const offerClickHandler = ({offer, evt}: OfferClickHandlerProps) => {
+    evt.stopPropagation();
+    dispatch(fetchCurrentOfferAction(offer));
+    dispatch(fetchCommentsAction(offer));
+    dispatch(fetchNearestOfferAction(offer));
   };
 
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);

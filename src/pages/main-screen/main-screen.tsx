@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '../../components/header/header';
 import { Sort } from '../../components/sort/sort';
-import { Offer, City } from '../../types/offers';
+import { Offer, City, OnOfferClickHandlerProps } from '../../types/offers';
 import { OfferList } from '../../components/offer-list/offer-list';
 import { OfferListEmpty } from '../../components/offer-list/offer-list-empty';
 import { Map } from '../../components/map/map';
@@ -15,7 +15,7 @@ import { selectCurrentCity } from '../../store/selectors';
 
 type MainScreenProps = {
   offers: Offer[];
-  onOfferClickHandler: (Offer: Offer) => void;
+  onOfferClickHandler: OnOfferClickHandlerProps;
 }
 
 export const MainScreen = ({offers, onOfferClickHandler}: MainScreenProps): JSX.Element => {
