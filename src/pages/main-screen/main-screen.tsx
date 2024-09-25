@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '../../components/header/header';
 import { Sort } from '../../components/sort/sort';
-import { Offer, City } from '../../types/offers';
+import { Offer, City, OnOfferClickHandlerProps } from '../../types/offers';
 import { OfferList } from '../../components/offer-list/offer-list';
 import { OfferListEmpty } from '../../components/offer-list/offer-list-empty';
 import { Map } from '../../components/map/map';
@@ -15,9 +15,10 @@ import { selectCurrentCity } from '../../store/selectors';
 
 type MainScreenProps = {
   offers: Offer[];
+  onOfferClickHandler: OnOfferClickHandlerProps;
 }
 
-export const MainScreen = ({offers}: MainScreenProps): JSX.Element => {
+export const MainScreen = ({offers, onOfferClickHandler}: MainScreenProps): JSX.Element => {
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
 
   const currentCity = useAppSelector(selectCurrentCity);
@@ -56,7 +57,7 @@ export const MainScreen = ({offers}: MainScreenProps): JSX.Element => {
                     <h2 className="visually-hidden">Places</h2>
                     <b className="places__found">{offersByCity.length} places to stay in {currentCity.name}</b>
                     <Sort />
-                    <OfferList offers={offersByCity} activeOfferId={activeOfferId} setActiveOfferId={setActiveOfferId} isNear={false} />
+                    <OfferList offers={offersByCity} activeOfferId={activeOfferId} setActiveOfferId={setActiveOfferId} isNear={false} onOfferClickHandler={onOfferClickHandler} />
                   </section>
                   <div className="cities__right-section">
                     <section className="cities__map map">

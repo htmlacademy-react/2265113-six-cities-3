@@ -1,3 +1,5 @@
+import { MouseEvent } from 'react';
+
 export type Location = {
   latitude: number;
   longitude: number;
@@ -21,8 +23,30 @@ export type Offer = {
   isPremium: boolean;
   rating: number;
 };
+
 export const UrlMarkers = {
   DEFAULT: 'img/pin.svg',
   CURRENT: 'img/pin-active.svg'
 };
 
+export type Host = {
+  name: string;
+  avatarUrl: string;
+  isPro: boolean;
+};
+
+export type CurrentOffer = Offer & {
+  images: string[];
+  description: string;
+  goods: string[];
+  host: Host;
+  bedrooms: number;
+  maxAdults: number;
+};
+
+export type OfferClickHandlerProps = {
+  offer: Offer;
+  evt: MouseEvent<HTMLElement>;
+}
+
+export type OnOfferClickHandlerProps = ({offer, evt}: OfferClickHandlerProps) => void;

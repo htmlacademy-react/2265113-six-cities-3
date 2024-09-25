@@ -1,7 +1,8 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { Cities, Sorts, AuthorizationStatus } from '../const.ts';
-import { City, Offer } from '../types/offers.ts';
-import { changeCity, selectOffers, changeSort, toggleSortsMenu, resetSort, loadOffers, requireAuthorization, setOffersDataLoadingStatus, loadUserData } from './action.ts';
+import { City, Offer, CurrentOffer } from '../types/offers.ts';
+import { Comment } from '../types/comments.ts';
+import { changeCity, selectOffers, changeSort, toggleSortsMenu, resetSort, loadOffers, requireAuthorization, setOffersDataLoadingStatus, loadUserData, loadCurrentOffer, loadComments, loadFavoriteOffers, loadNearestOffers } from './action.ts';
 import { sortOffers } from '../utils/sort.ts';
 import { UserData } from '../types/user-data.ts';
 
@@ -13,6 +14,10 @@ type State = {
   authorizationStatus: AuthorizationStatus;
   isOffersDataLoading: boolean;
   user: UserData | null;
+  currentOffer: CurrentOffer | null;
+  comments: Comment[];
+  favoriteOffers: Offer[];
+  nearestOffers: Offer[];
 };
 
 const initialState: State = {
@@ -22,7 +27,11 @@ const initialState: State = {
   isFiltersOpen: false,
   authorizationStatus: AuthorizationStatus.Unknown,
   isOffersDataLoading: false,
-  user: null
+  user: null,
+  currentOffer: null,
+  comments: [],
+  favoriteOffers: [],
+  nearestOffers: []
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -54,5 +63,17 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadUserData, (state, action) => {
       state.user = action.payload;
+    })
+    .addCase(loadCurrentOffer, (state, action) => {
+      state.currentOffer = action.payload;
+    })
+    .addCase(loadComments, (state, action) => {
+      state.comments = action.payload;
+    })
+    .addCase(loadFavoriteOffers, (state, action) => {
+      state.favoriteOffers = action.payload;
+    })
+    .addCase(loadNearestOffers, (state, action) => {
+      state.nearestOffers = action.payload;
     });
 });

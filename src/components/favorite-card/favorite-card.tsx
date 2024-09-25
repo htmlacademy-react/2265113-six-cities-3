@@ -1,11 +1,16 @@
 import { Link } from 'react-router-dom';
-import { Offer } from '../../types/offers';
+import { Offer, OnOfferClickHandlerProps } from '../../types/offers';
 import { PlaceCardRating } from '../card/place-card-rating';
 
 const status = false;
 
-export const FavoriteCard = ({ offer }: { offer: Offer }) => (
-  <article className="favorites__card place-card" key={offer.id}>
+type FavoriteCardProps = {
+  offer: Offer;
+  onOfferClickHandler: OnOfferClickHandlerProps;
+}
+
+export const FavoriteCard = ({ offer, onOfferClickHandler }: FavoriteCardProps) => (
+  <article className="favorites__card place-card" key={offer.id} onClick={(evt) => onOfferClickHandler({offer, evt})}>
     { offer.isPremium ?
       <div className="place-card__mark">
         <span>Premium</span>

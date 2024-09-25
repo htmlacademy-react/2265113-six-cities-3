@@ -2,32 +2,43 @@ import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { Header } from '../../components/header/header';
-import { Offer } from '../../types/offers';
+import { OnOfferClickHandlerProps } from '../../types/offers';
 import { CommentForm } from '../../components/comment-form/comment-form';
 import { CommentList } from '../../components/comment-list/comment-list';
 import { PlaceCardRating } from '../../components/card/place-card-rating';
 import { OfferList } from '../../components/offer-list/offer-list';
 import { Map } from '../../components/map/map';
-import { useAppSelector } from '../../hooks';
-import { selectCurrentCity } from '../../store/selectors';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { fetchCurrentOfferAction, fetchCommentsAction, fetchNearestOfferAction } from '../../store/api-actions';
+import { selectCurrentOffer, selectAuthorizationStatus, selectNearestOffers, selectOffers } from '../../store/selectors';
+import { AuthorizationStatus, ImagesCount } from '../../const';
 
 const status = true;
 
 type OfferProps = {
-  offers: Offer[];
+  onOfferClickHandler: OnOfferClickHandlerProps;
 }
 
-export const OfferScreen = ({offers}: OfferProps): JSX.Element => {
+export const OfferScreen = ({onOfferClickHandler}: OfferProps): JSX.Element => {
+  const offers = useAppSelector(selectOffers);
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
   const { id } = useParams();
-  const currentOffer = offers.find((offer) => offer.id === id);
-  const currentCity = useAppSelector(selectCurrentCity);
+  const dispatch = useAppDispatch();
+  const curOffer = offers.find((elem) => elem.id === id);
+  const currentOffer = useAppSelector(selectCurrentOffer);
+
+  if (curOffer && !currentOffer) {
+    dispatch(fetchCurrentOfferAction(curOffer));
+    dispatch(fetchCommentsAction(curOffer));
+    dispatch(fetchNearestOfferAction(curOffer));
+  }
+
+  const authorizationStatus = useAppSelector(selectAuthorizationStatus);
+  const nearestOffers = useAppSelector(selectNearestOffers).slice(0, 3);
 
   if (!currentOffer) {
     return <div>Offer not found</div>;
   }
-
-  const nearestOffers = offers.filter((offer) => (offer.city.name === currentCity.name) && (offer.id !== currentOffer.id));
 
   return (
     <div className="page">
@@ -40,24 +51,11 @@ export const OfferScreen = ({offers}: OfferProps): JSX.Element => {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src="img/room.jpg" alt="Photo studio"/>
-              </div>
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src="img/apartment-01.jpg" alt="Photo studio"/>
-              </div>
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src="img/apartment-02.jpg" alt="Photo studio"/>
-              </div>
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src="img/apartment-03.jpg" alt="Photo studio"/>
-              </div>
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src="img/studio-01.jpg" alt="Photo studio"/>
-              </div>
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src="img/apartment-01.jpg" alt="Photo studio"/>
-              </div>
+              {currentOffer.images.slice(ImagesCount.MIN_IMAGES, ImagesCount.MAX_IMAGES).map((image) => (
+                <div className="offer__image-wrapper" key={id + image}>
+                  <img className="offer__image" src={image} alt="Photo studio" />
+                </div>
+              ))}
             </div>
           </div>
           <div className="offer__container container">
@@ -83,10 +81,10 @@ export const OfferScreen = ({offers}: OfferProps): JSX.Element => {
                   {currentOffer.type}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  3 Bedrooms
+                  {currentOffer.bedrooms > 1 ? `${currentOffer.bedrooms} Bedrooms` : `${currentOffer.bedrooms} Bedroom`}
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  Max 4 adults
+                  Max {currentOffer.maxAdults} adults
                 </li>
               </ul>
               <div className="offer__price">
@@ -96,63 +94,39 @@ export const OfferScreen = ({offers}: OfferProps): JSX.Element => {
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What&apos;s inside</h2>
                 <ul className="offer__inside-list">
-                  <li className="offer__inside-item">
-                    Wi-Fi
-                  </li>
-                  <li className="offer__inside-item">
-                    Washing machine
-                  </li>
-                  <li className="offer__inside-item">
-                    Towels
-                  </li>
-                  <li className="offer__inside-item">
-                    Heating
-                  </li>
-                  <li className="offer__inside-item">
-                    Coffee machine
-                  </li>
-                  <li className="offer__inside-item">
-                    Baby seat
-                  </li>
-                  <li className="offer__inside-item">
-                    Kitchen
-                  </li>
-                  <li className="offer__inside-item">
-                    Dishwasher
-                  </li>
-                  <li className="offer__inside-item">
-                    Cabel TV
-                  </li>
-                  <li className="offer__inside-item">
-                    Fridge
-                  </li>
+                  {currentOffer.goods.map((good) => (
+                    <li className="offer__inside-item" key={id + good}>
+                      {good}
+                    </li>
+                  ))}
                 </ul>
               </div>
               <div className="offer__host">
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
                   <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="offer__avatar user__avatar" src="img/avatar-angelina.jpg" width="74" height="74" alt="Host avatar"/>
+                    <img className="offer__avatar user__avatar" src={currentOffer.host.avatarUrl} width="74" height="74" alt="Host avatar"/>
                   </div>
                   <span className="offer__user-name">
-                    Angelina
+                    {currentOffer.host.name}
                   </span>
-                  <span className="offer__user-status">
-                    Pro
-                  </span>
+                  {currentOffer.host.isPro
+                    ? (
+                      <span className="offer__user-status">
+                          Pro
+                      </span>
+                    )
+                    : ''}
                 </div>
                 <div className="offer__description">
                   <p className="offer__text">
-                    A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
-                  </p>
-                  <p className="offer__text">
-                    An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
+                    {currentOffer.description}
                   </p>
                 </div>
               </div>
               <section className="offer__reviews reviews">
                 <CommentList />
-                <CommentForm />
+                {authorizationStatus === AuthorizationStatus.Auth ? <CommentForm /> : ''}
               </section>
             </div>
           </div>
@@ -167,7 +141,7 @@ export const OfferScreen = ({offers}: OfferProps): JSX.Element => {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <OfferList offers={nearestOffers} activeOfferId={activeOfferId} setActiveOfferId={setActiveOfferId} isNear />
+            <OfferList offers={nearestOffers} activeOfferId={activeOfferId} setActiveOfferId={setActiveOfferId} onOfferClickHandler={onOfferClickHandler} isNear />
           </section>
         </div>
       </main>

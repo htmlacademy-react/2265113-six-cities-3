@@ -2,14 +2,14 @@ import { Logo } from '../logo/logo';
 import { Link } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { AppRoute, AuthorizationStatus } from '../../const';
-import { selectUserData, selectAuthorizationStatus, selectOffers } from '../../store/selectors';
+import { selectUserData, selectAuthorizationStatus, selectFavoriteOffers } from '../../store/selectors';
 import { logoutAction } from '../../store/api-actions';
 
 export const Header = () => {
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);
   const userData = useAppSelector(selectUserData);
-  const favoriteOffers = useAppSelector(selectOffers).filter((offer) => offer.isFavorite === true);
+  const favoriteOffers = useAppSelector(selectFavoriteOffers);
 
   return (
     <header className="header">

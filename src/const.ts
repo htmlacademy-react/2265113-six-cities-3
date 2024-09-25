@@ -11,7 +11,20 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN'
 }
 
-export const COMMENTS_COUNT = 10;
+export const CommentLength = {
+  MIN_LENGTH: 50,
+  MAX_LENGTH: 300
+};
+
+export const CommentsCount = {
+  MIN_COMMENTS_COUNT: 0,
+  MAX_COMMENTS_COUNT: 10
+};
+
+export const ImagesCount = {
+  MIN_IMAGES: 0,
+  MAX_IMAGES: 6
+};
 
 export const Cities = {
   PARIS: {
