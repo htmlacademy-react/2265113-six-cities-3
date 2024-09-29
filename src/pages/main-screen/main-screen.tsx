@@ -8,10 +8,11 @@ import { OfferList } from '../../components/offer-list/offer-list';
 import { OfferListEmpty } from '../../components/offer-list/offer-list-empty';
 import { Map } from '../../components/map/map';
 import { CitiesList } from '../../components/cities-list/cities-list';
-import { changeCity, resetSort } from '../../store/action';
+import { changeCity } from '../../store/city-process/city-process';
+import { resetSort } from '../../store/offer-data/offer-data';
 import { AppRoute } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { selectCurrentCity } from '../../store/selectors';
+import { selectCurrentCity } from '../../store/city-process/selectors';
 
 type MainScreenProps = {
   offers: Offer[];

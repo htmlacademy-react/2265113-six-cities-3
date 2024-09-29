@@ -1,5 +1,5 @@
 import { useAppSelector } from '../../hooks';
-import { selectComments } from '../../store/selectors';
+import { selectComments } from '../../store/comments-data/selectors';
 import { CommentItem } from '../comment-item/comment-item';
 import { CommentsCount } from '../../const';
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import cn from 'classnames';
 import { Offer, OnOfferClickHandlerProps } from '../../types/offers';
@@ -6,7 +6,7 @@ import { PlaceCardRating } from './place-card-rating';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { updateOfferFavoriteStatusAction, fetchFavoriteOffersAction, fetchOffersAction } from '../../store/api-actions';
 import { AuthorizationStatus, AppRoute } from '../../const';
-import { selectAuthorizationStatus } from '../../store/selectors';
+import { selectAuthorizationStatus } from '../../store/user-process/selectors';
 
 const status = false;
 
@@ -46,8 +46,8 @@ export const Card = ({offer, onSelect, isActive, onOfferClickHandler, isNear}: C
       {'cities__card': !isNear},
       {'near-places__card': isNear}
     )}
-    onMouseEnter={() => onSelect(offer.id)}
-    onMouseLeave={() => onSelect(null)}
+    onMouseEnter={useCallback(() => onSelect(offer.id), [offer.id, onSelect])}
+    onMouseLeave={useCallback(() => onSelect(null), [onSelect])}
     onClick={(evt) => onOfferClickHandler({offer, evt})}
     data-active={isActive ? 'true' : undefined}
     >

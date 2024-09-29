@@ -2,7 +2,7 @@ import React, { useState, FormEvent, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { postCommentAction } from '../../store/api-actions';
-import { selectCurrentOffer } from '../../store/selectors';
+import { selectCurrentOffer } from '../../store/offer-data/selectors';
 import { CommentToSend } from '../../types/comments';
 import { AppRoute, CommentLength } from '../../const';
 import { fetchCommentsAction } from '../../store/api-actions';

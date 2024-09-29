@@ -4,7 +4,7 @@ import { Header } from '../../components/header/header';
 import { Offer, OnOfferClickHandlerProps } from '../../types/offers';
 import { GroupedOffers } from '../../components/grouped-offers/grouped-offers';
 import { useAppSelector } from '../../hooks';
-import { selectFavoriteOffers } from '../../store/selectors';
+import { selectFavoriteOffers } from '../../store/offer-data/selectors';
 
 type FavoritesScreenProps = {
   onOfferClickHandler: OnOfferClickHandlerProps;

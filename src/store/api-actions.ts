@@ -2,67 +2,52 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
 import { AxiosInstance } from 'axios';
 import { toast } from 'react-toastify';
-import { APIRoute, AuthorizationStatus, AppRoute } from '../const';
-import { loadOffers, setOffersDataLoadingStatus, requireAuthorization, redirectToRoute, loadUserData, loadCurrentOffer, loadComments, loadFavoriteOffers, loadNearestOffers } from './action';
+import { APIRoute, AppRoute } from '../const';
+import { redirectToRoute } from './action';
 import { Offer, CurrentOffer } from '../types/offers';
 import { Comment, CommentToSend } from '../types/comments';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
 import { dropToken, saveToken } from '../services/token';
 
-export const fetchOffersAction = createAsyncThunk<void, undefined, {
+export const fetchOffersAction = createAsyncThunk<Offer[], undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'FETCH_OFFERS',
-  async (_arg, {dispatch, extra: api}) => {
-    try {
-      dispatch(setOffersDataLoadingStatus(true));
-      const { data } = await api.get<Offer[]>(APIRoute.Offers);
-      dispatch(loadOffers(data));
-    } catch {
-      toast.warn('Failed to fetch offers');
-    } finally {
-      dispatch(setOffersDataLoadingStatus(false));
-    }
+  async (_arg, {extra: api}) => {
+    const { data } = await api.get<Offer[]>(APIRoute.Offers);
+
+    return data;
   }
 );
 
-export const checkAuthAction = createAsyncThunk<void, undefined, {
+export const checkAuthAction = createAsyncThunk<UserData, undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'CHECK_AUTH',
-  async (_arg, {dispatch, extra: api}) => {
-    try {
-      const { data } = await api.get<UserData>(APIRoute.Login);
-      dispatch(loadUserData(data));
+  async (_arg, {extra: api}) => {
+    const { data } = await api.get<UserData>(APIRoute.Login);
 
-      dispatch(requireAuthorization(AuthorizationStatus.Auth));
-    } catch {
-      dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
-    }
+    return data;
   }
 );
 
-export const loginAction = createAsyncThunk<void, AuthData, {
+export const loginAction = createAsyncThunk<UserData, AuthData, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'LOGIN',
   async ({email, password}, {dispatch, extra: api}) => {
-    try {
-      const { data: { token }, data } = await api.post<UserData>(APIRoute.Login, {email, password});
-      dispatch(loadUserData(data));
-      saveToken(token);
-      dispatch(requireAuthorization(AuthorizationStatus.Auth));
-      dispatch(redirectToRoute(AppRoute.Main));
-    } catch {
-      toast.warn('Failed to Login');
-    }
+    const { data: { token }, data } = await api.post<UserData>(APIRoute.Login, {email, password});
+    saveToken(token);
+    dispatch(redirectToRoute(AppRoute.Main));
+
+    return data;
   }
 );
 
@@ -72,49 +57,39 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   extra: AxiosInstance;
 }>(
   'LOGOUT',
-  async (_arg, {dispatch, extra: api}) => {
+  async (_arg, {extra: api}) => {
     try {
       await api.delete(APIRoute.Logout);
       dropToken();
-      dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     } catch {
       toast.warn('Failed to Logout');
     }
   }
 );
 
-export const fetchCurrentOfferAction = createAsyncThunk<void, Offer, {
+export const fetchCurrentOfferAction = createAsyncThunk<CurrentOffer, Offer, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'FETCH_CURRENT_OFFER',
-  async ({id}, {dispatch, extra: api}) => {
-    try {
-      dispatch(setOffersDataLoadingStatus(true));
-      const { data } = await api.get<CurrentOffer>(`${APIRoute.Offers}/${id}`);
-      dispatch(loadCurrentOffer(data));
-    } catch {
-      toast.warn('Failed to fetch current offer');
-    } finally {
-      dispatch(setOffersDataLoadingStatus(false));
-    }
+  async ({id}, {extra: api}) => {
+    const { data } = await api.get<CurrentOffer>(`${APIRoute.Offers}/${id}`);
+
+    return data;
   }
 );
 
-export const fetchCommentsAction = createAsyncThunk<void, Offer, {
+export const fetchCommentsAction = createAsyncThunk<Comment[], Offer, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'FETCH_COMMENTS',
-  async ({id}, {dispatch, extra: api}) => {
-    try {
-      const { data } = await api.get<Comment[]>(`${APIRoute.Comments}/${id}`);
-      dispatch(loadComments(data));
-    } catch {
-      toast.warn('Failed to fetch comments');
-    }
+  async ({id}, {extra: api}) => {
+    const { data } = await api.get<Comment[]>(`${APIRoute.Comments}/${id}`);
+
+    return data;
   }
 );
 
@@ -127,60 +102,52 @@ export const postCommentAction = createAsyncThunk<Comment | void, CommentToSend,
   'POST_COMMENT',
   async ({comment, rating, id}, {extra: api}) => {
     try {
-      await api.post<Comment>(`${APIRoute.Comments}/${id}`, {comment, rating});
+      const {data} = await api.post<Comment>(`${APIRoute.Comments}/${id}`, {comment, rating});
+
+      return data;
     } catch {
       toast.warn('Failed to post comments');
     }
   }
 );
 
-export const fetchFavoriteOffersAction = createAsyncThunk<void, undefined, {
+export const fetchFavoriteOffersAction = createAsyncThunk<Offer[], undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'FETCH_FAVORITE_OFFERS',
-  async (_arg, {dispatch, extra: api}) => {
-    try {
-      dispatch(setOffersDataLoadingStatus(true));
-      const { data } = await api.get<Offer[]>(APIRoute.Favorite);
-      dispatch(loadFavoriteOffers(data));
-    } catch {
-      toast.warn('Failed to fetch favorite offers');
-    } finally {
-      dispatch(setOffersDataLoadingStatus(false));
-    }
+  async (_arg, {extra: api}) => {
+    const { data } = await api.get<Offer[]>(APIRoute.Favorite);
+
+    return data;
   }
 );
 
-export const fetchNearestOfferAction = createAsyncThunk<void, Offer, {
+export const fetchNearestOfferAction = createAsyncThunk<Offer[], Offer, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'FETCH_NEAREST_OFFERS',
-  async ({id}, {dispatch, extra: api}) => {
-    try {
-      const { data } = await api.get<Offer[]>(`${APIRoute.Offers}/${id}/nearby`);
-      dispatch(loadNearestOffers(data));
-    } catch {
-      toast.warn('Failed to fetch nearest offers');
-    }
+  async ({id}, {extra: api}) => {
+    const { data } = await api.get<Offer[]>(`${APIRoute.Offers}/${id}/nearby`);
+
+    return data;
   }
 );
 
-export const updateOfferFavoriteStatusAction = createAsyncThunk<void, {id: string; favoriteStatus: boolean}, {
+export const updateOfferFavoriteStatusAction = createAsyncThunk<Offer[], {id: string; favoriteStatus: boolean}, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'UPDATE_OFFER_FAVORITE_STATUS',
   async ({id, favoriteStatus}, {extra: api}) => {
-    try {
-      const status = favoriteStatus ? 0 : 1;
-      await api.post(`${APIRoute.Favorite}/${id}/${status}`);
-    } catch {
-      toast.warn('Failed to update offer favorite status');
-    }
+    const status = favoriteStatus ? 0 : 1;
+    await api.post(`${APIRoute.Favorite}/${id}/${status}`);
+    const { data } = await api.get<Offer[]>(APIRoute.Offers);
+
+    return data;
   }
 );

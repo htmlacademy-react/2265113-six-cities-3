@@ -10,7 +10,8 @@ import { OfferList } from '../../components/offer-list/offer-list';
 import { Map } from '../../components/map/map';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { fetchCurrentOfferAction, fetchCommentsAction, fetchNearestOfferAction } from '../../store/api-actions';
-import { selectCurrentOffer, selectAuthorizationStatus, selectNearestOffers, selectOffers } from '../../store/selectors';
+import { selectAuthorizationStatus } from '../../store/user-process/selectors';
+import { selectCurrentOffer, selectNearestOffers, selectOffers } from '../../store/offer-data/selectors';
 import { AuthorizationStatus, ImagesCount } from '../../const';
 
 const status = true;
