@@ -45,8 +45,5 @@ export type CurrentOffer = Offer & {
 };
 
 export type OfferClickHandlerProps = {
-  offer: Offer;
   evt: MouseEvent<HTMLElement>;
 }
-
-export type OnOfferClickHandlerProps = ({offer, evt}: OfferClickHandlerProps) => void;

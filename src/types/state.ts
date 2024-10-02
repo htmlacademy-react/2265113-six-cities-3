@@ -16,6 +16,7 @@ export type OffersData = {
   nearestOffers: Offer[];
   isOffersDataLoading: boolean;
   sortOffers: string;
+  activeOfferId: string | null;
 };
 
 export type CommentsData = {

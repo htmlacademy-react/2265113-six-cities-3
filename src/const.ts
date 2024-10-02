@@ -5,6 +5,12 @@ export enum AppRoute {
   Main = '/'
 }
 
+export const CardType = {
+  MAIN: 0,
+  FAVORITES: 1,
+  NEAR: 2
+};
+
 export enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',

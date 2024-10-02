@@ -31,3 +31,8 @@ export const selectNearestOffers = createSelector(
   (state: State) => state[NameSpace.Offers],
   (state: OffersData) => state.nearestOffers
 );
+
+export const selectActiveOfferId = createSelector(
+  (state: State) => state[NameSpace.Offers],
+  (state: OffersData) => state.activeOfferId
+);

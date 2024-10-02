@@ -1,8 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
-import { useState } from 'react';
 import { Header } from '../../components/header/header';
-import { OnOfferClickHandlerProps } from '../../types/offers';
 import { CommentForm } from '../../components/comment-form/comment-form';
 import { CommentList } from '../../components/comment-list/comment-list';
 import { PlaceCardRating } from '../../components/card/place-card-rating';
@@ -12,21 +10,17 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import { fetchCurrentOfferAction, fetchCommentsAction, fetchNearestOfferAction } from '../../store/api-actions';
 import { selectAuthorizationStatus } from '../../store/user-process/selectors';
 import { selectCurrentOffer, selectNearestOffers, selectOffers } from '../../store/offer-data/selectors';
-import { AuthorizationStatus, ImagesCount } from '../../const';
+import { AuthorizationStatus, CardType, ImagesCount } from '../../const';
 
 const status = true;
 
-type OfferProps = {
-  onOfferClickHandler: OnOfferClickHandlerProps;
-}
-
-export const OfferScreen = ({onOfferClickHandler}: OfferProps): JSX.Element => {
-  const offers = useAppSelector(selectOffers);
-  const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
-  const { id } = useParams();
+export const OfferScreen = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const curOffer = offers.find((elem) => elem.id === id);
+  const offers = useAppSelector(selectOffers);
   const currentOffer = useAppSelector(selectCurrentOffer);
+  const { id } = useParams();
+
+  const curOffer = offers.find((elem) => elem.id === id);
 
   if (curOffer && !currentOffer) {
     dispatch(fetchCurrentOfferAction(curOffer));
@@ -135,14 +129,13 @@ export const OfferScreen = ({onOfferClickHandler}: OfferProps): JSX.Element => {
             <Map
               city={currentOffer.city}
               points={nearestOffers}
-              selectedOffer={offers.find((offer) => offer.id === activeOfferId)}
             />
           </section>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <OfferList offers={nearestOffers} activeOfferId={activeOfferId} setActiveOfferId={setActiveOfferId} onOfferClickHandler={onOfferClickHandler} isNear />
+            <OfferList offers={nearestOffers} cardType={CardType.NEAR} />
           </section>
         </div>
       </main>

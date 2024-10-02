@@ -10,7 +10,8 @@ const initialState: OffersData = {
   currentOffer: null,
   nearestOffers: [],
   isOffersDataLoading: false,
-  sortOffers: Sorts.POPULAR
+  sortOffers: Sorts.POPULAR,
+  activeOfferId: null
 };
 
 export const offerData = createSlice({
@@ -23,6 +24,12 @@ export const offerData = createSlice({
     },
     resetSort: (state) => {
       state.sortOffers = Sorts.POPULAR;
+    },
+    changeActiveOfferId: (state, action: PayloadAction<string | null>) => {
+      state.activeOfferId = action.payload;
+    },
+    resetCurrentOffer: (state) => {
+      state.currentOffer = null;
     }
   },
   extraReducers(builder) {
@@ -58,4 +65,4 @@ export const offerData = createSlice({
   }
 });
 
-export const { changeSort, resetSort } = offerData.actions;
+export const { changeSort, resetSort, changeActiveOfferId, resetCurrentOffer } = offerData.actions;

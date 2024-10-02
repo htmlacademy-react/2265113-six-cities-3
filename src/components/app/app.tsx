@@ -1,34 +1,29 @@
-import { useCallback } from 'react';
 import {Route, Routes} from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { PrivateRoute } from './private-route/private-route';
 import { RouteConfig } from '../../types/route-config';
 import { createRoutesConfig } from './routes-config/routes-config';
-import { selectOffers, selectIsOffersDataLoading } from '../../store/offer-data/selectors';
-import { useAppSelector } from '../../hooks';
+import { selectIsOffersDataLoading } from '../../store/offer-data/selectors';
+import { useAppSelector, useAppDispatch } from '../../hooks';
 import { Loader } from '../loader/loader';
 import { HistoryRouter } from '../history-route/history-route';
 import { browserHistory } from '../../browser-history';
 import { selectAuthorizationStatus } from '../../store/user-process/selectors';
-import { useAppDispatch } from '../../hooks';
-import { fetchCurrentOfferAction, fetchCommentsAction, fetchNearestOfferAction } from '../../store/api-actions';
-import { OfferClickHandlerProps} from '../../types/offers';
+import { checkAuthAction, fetchFavoriteOffersAction, fetchOffersAction } from '../../store/api-actions';
+import { useEffect } from 'react';
+
 
 export const App = (): JSX.Element => {
+  const authorizationStatus = useAppSelector(selectAuthorizationStatus);
+  const routes = createRoutesConfig();
+  const isOffersDataLoading = useAppSelector(selectIsOffersDataLoading);
   const dispatch = useAppDispatch();
 
-  const offerClickHandler = useCallback(
-    ({offer, evt}: OfferClickHandlerProps) => {
-      evt.stopPropagation();
-      dispatch(fetchCurrentOfferAction(offer));
-      dispatch(fetchCommentsAction(offer));
-      dispatch(fetchNearestOfferAction(offer));
-    }, [dispatch]);
-
-  const authorizationStatus = useAppSelector(selectAuthorizationStatus);
-  const offers = useAppSelector(selectOffers);
-  const routes = createRoutesConfig(offers, offerClickHandler);
-  const isOffersDataLoading = useAppSelector(selectIsOffersDataLoading);
+  useEffect(() => {
+    dispatch(checkAuthAction());
+    dispatch(fetchOffersAction());
+    dispatch(fetchFavoriteOffersAction());
+  }, [dispatch]);
 
   if (isOffersDataLoading) {
     return (

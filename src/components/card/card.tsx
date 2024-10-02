@@ -1,24 +1,22 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import cn from 'classnames';
-import { Offer, OnOfferClickHandlerProps } from '../../types/offers';
+import { Offer, OfferClickHandlerProps } from '../../types/offers';
 import { PlaceCardRating } from './place-card-rating';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { updateOfferFavoriteStatusAction, fetchFavoriteOffersAction, fetchOffersAction } from '../../store/api-actions';
-import { AuthorizationStatus, AppRoute } from '../../const';
+import { updateOfferFavoriteStatusAction, fetchFavoriteOffersAction, fetchOffersAction, fetchCurrentOfferAction, fetchCommentsAction, fetchNearestOfferAction } from '../../store/api-actions';
+import { AuthorizationStatus, AppRoute, CardType } from '../../const';
 import { selectAuthorizationStatus } from '../../store/user-process/selectors';
+import { changeActiveOfferId } from '../../store/offer-data/offer-data';
 
 const status = false;
 
 type CardProps = {
   offer: Offer;
-  onSelect: (selectedId: string | null) => void;
-  isActive: boolean;
-  onOfferClickHandler: OnOfferClickHandlerProps;
-  isNear: boolean;
+  cardType: number;
 }
 
-export const Card = ({offer, onSelect, isActive, onOfferClickHandler, isNear}: CardProps): JSX.Element => {
+export const Card = ({offer, cardType}: CardProps): JSX.Element => {
   const [favoriteStatus, setFavoriteStatus] = useState<boolean>(offer.isFavorite);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
@@ -40,16 +38,23 @@ export const Card = ({offer, onSelect, isActive, onOfferClickHandler, isNear}: C
     setIsUpdating(false);
   };
 
+  const onOfferClickHandler = ({evt}: OfferClickHandlerProps) => {
+    evt.stopPropagation();
+    dispatch(fetchCurrentOfferAction(offer));
+    dispatch(fetchCommentsAction(offer));
+    dispatch(fetchNearestOfferAction(offer));
+  };
+
   return (
     <article className={cn(
       'place-card',
-      {'cities__card': !isNear},
-      {'near-places__card': isNear}
+      {'cities__card': cardType === CardType.MAIN},
+      {'near-places__card': cardType === CardType.NEAR},
+      {'favorites__card': cardType === CardType.FAVORITES}
     )}
-    onMouseEnter={useCallback(() => onSelect(offer.id), [offer.id, onSelect])}
-    onMouseLeave={useCallback(() => onSelect(null), [onSelect])}
-    onClick={(evt) => onOfferClickHandler({offer, evt})}
-    data-active={isActive ? 'true' : undefined}
+    onMouseEnter={() => dispatch(changeActiveOfferId(offer.id))}
+    onMouseLeave={() => dispatch(changeActiveOfferId(null))}
+    onClick={(evt) => onOfferClickHandler({evt})}
     >
       { offer.isPremium ?
         <div className="place-card__mark">
@@ -57,15 +62,23 @@ export const Card = ({offer, onSelect, isActive, onOfferClickHandler, isNear}: C
         </div> : '' }
       <div className={cn(
         'place-card__image-wrapper',
-        {'cities__image-wrapper': !isNear},
-        {'near-places__image-wrapper': isNear}
+        {'cities__image-wrapper': cardType === CardType.MAIN},
+        {'near-places__image-wrapper': cardType === CardType.NEAR},
+        {'favorites__image-wrapper': cardType === CardType.FAVORITES}
       )}
       >
         <Link to={`/offer/${offer.id}`}>
-          <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image"/>
+          {cardType === CardType.FAVORITES ?
+            <img className="place-card__image" src={offer.previewImage} width="150" height="110" alt="Place image"/>
+            :
+            <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image"/>}
         </Link>
       </div>
-      <div className="place-card__info">
+      <div className={cn(
+        'place-card__info',
+        {'favorites__card-info': cardType === CardType.FAVORITES}
+      )}
+      >
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{offer.price}</b>
