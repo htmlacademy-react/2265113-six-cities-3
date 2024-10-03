@@ -23,7 +23,7 @@ export const CitiesItem = ({city}: CitiesItemProps): JSX.Element => {
   };
 
   return (
-    <li className="locations__item" key={city.name} onClick={() => onCityClick()}>
+    <li className="locations__item" key={city.name} onClick={onCityClick}>
       <Link className={`locations__item-link tabs__item ${currentCity.name === city.name ? 'tabs__item--active' : ''}`} to="/">
         <span>{city.name}</span>
       </Link>

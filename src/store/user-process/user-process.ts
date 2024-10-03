@@ -9,13 +9,21 @@ const initialState: UserProcess = {
   user: null
 };
 
+const setUserAndAuthorization = (state: UserProcess, user: UserData | null, status: AuthorizationStatus) => {
+  state.user = user;
+  state.authorizationStatus = status;
+};
+
+const handleAuthRejected = (state: UserProcess) => {
+  state.authorizationStatus = AuthorizationStatus.NoAuth;
+};
+
 export const userProcess = createSlice({
   name: NameSpace.User,
   initialState,
   reducers: {
-    loadUserData: (state, action: PayloadAction<{user: UserData}>) => {
-      const { user } = action.payload;
-      state.user = user;
+    loadUserData: (state, action: PayloadAction<UserData>) => {
+      state.user = action.payload;
     }
   },
   extraReducers(builder) {
@@ -23,18 +31,13 @@ export const userProcess = createSlice({
       .addCase(checkAuthAction.fulfilled, (state) => {
         state.authorizationStatus = AuthorizationStatus.Auth;
       })
-      .addCase(checkAuthAction.rejected, (state) => {
-        state.authorizationStatus = AuthorizationStatus.NoAuth;
-      })
+      .addCase(checkAuthAction.rejected, handleAuthRejected)
       .addCase(loginAction.fulfilled, (state, action) => {
-        state.user = action.payload;
-        state.authorizationStatus = AuthorizationStatus.Auth;
+        setUserAndAuthorization(state, action.payload, AuthorizationStatus.Auth);
       })
-      .addCase(loginAction.rejected, (state) => {
-        state.authorizationStatus = AuthorizationStatus.NoAuth;
-      })
+      .addCase(loginAction.rejected, handleAuthRejected)
       .addCase(logoutAction.fulfilled, (state) => {
-        state.authorizationStatus = AuthorizationStatus.NoAuth;
+        setUserAndAuthorization(state, null, AuthorizationStatus.NoAuth);
       });
   }
 });

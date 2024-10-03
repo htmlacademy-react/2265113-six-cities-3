@@ -11,6 +11,7 @@ import { browserHistory } from '../../browser-history';
 import { selectAuthorizationStatus } from '../../store/user-process/selectors';
 import { checkAuthAction, fetchFavoriteOffersAction, fetchOffersAction } from '../../store/api-actions';
 import { useEffect } from 'react';
+import { AuthorizationStatus } from '../../const';
 
 
 export const App = (): JSX.Element => {
@@ -22,8 +23,11 @@ export const App = (): JSX.Element => {
   useEffect(() => {
     dispatch(checkAuthAction());
     dispatch(fetchOffersAction());
-    dispatch(fetchFavoriteOffersAction());
-  }, [dispatch]);
+
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      dispatch(fetchFavoriteOffersAction());
+    }
+  }, [authorizationStatus, dispatch]);
 
   if (isOffersDataLoading) {
     return (

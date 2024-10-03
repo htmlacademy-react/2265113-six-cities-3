@@ -8,6 +8,7 @@ import { updateOfferFavoriteStatusAction, fetchFavoriteOffersAction, fetchOffers
 import { AuthorizationStatus, AppRoute, CardType } from '../../const';
 import { selectAuthorizationStatus } from '../../store/user-process/selectors';
 import { changeActiveOfferId } from '../../store/offer-data/offer-data';
+import { PlaceCardImage } from './place-card-image';
 
 const status = false;
 
@@ -31,7 +32,6 @@ export const Card = ({offer, cardType}: CardProps): JSX.Element => {
       setFavoriteStatus(!favoriteStatus);
       dispatch(fetchFavoriteOffersAction);
       dispatch(fetchOffersAction);
-      navigate(AppRoute.Main);
     } else {
       navigate(AppRoute.Login);
     }
@@ -45,33 +45,31 @@ export const Card = ({offer, cardType}: CardProps): JSX.Element => {
     dispatch(fetchNearestOfferAction(offer));
   };
 
+  const cardClassMap = {
+    [CardType.MAIN]: 'cities__card',
+    [CardType.NEAR]: 'near-places__card',
+    [CardType.FAVORITES]: 'favorites__card'
+  };
+
+  const imageWrapperClassMap = {
+    [CardType.MAIN]: 'cities__image-wrapper',
+    [CardType.NEAR]: 'near-places__image-wrapper',
+    [CardType.FAVORITES]: 'favorites__image-wrapper'
+  };
+
   return (
-    <article className={cn(
-      'place-card',
-      {'cities__card': cardType === CardType.MAIN},
-      {'near-places__card': cardType === CardType.NEAR},
-      {'favorites__card': cardType === CardType.FAVORITES}
-    )}
-    onMouseEnter={() => dispatch(changeActiveOfferId(offer.id))}
-    onMouseLeave={() => dispatch(changeActiveOfferId(null))}
-    onClick={(evt) => onOfferClickHandler({evt})}
+    <article className={cn('place-card', cardClassMap[cardType])}
+      onMouseEnter={() => dispatch(changeActiveOfferId(offer.id))}
+      onMouseLeave={() => dispatch(changeActiveOfferId(null))}
+      onClick={(evt) => onOfferClickHandler({evt})}
     >
       { offer.isPremium ?
         <div className="place-card__mark">
           <span>Premium</span>
         </div> : '' }
-      <div className={cn(
-        'place-card__image-wrapper',
-        {'cities__image-wrapper': cardType === CardType.MAIN},
-        {'near-places__image-wrapper': cardType === CardType.NEAR},
-        {'favorites__image-wrapper': cardType === CardType.FAVORITES}
-      )}
-      >
+      <div className={cn('place-card__image-wrapper', imageWrapperClassMap[cardType])}>
         <Link to={`/offer/${offer.id}`}>
-          {cardType === CardType.FAVORITES ?
-            <img className="place-card__image" src={offer.previewImage} width="150" height="110" alt="Place image"/>
-            :
-            <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image"/>}
+          <PlaceCardImage cardType={cardType} offer={offer} />
         </Link>
       </div>
       <div className={cn(

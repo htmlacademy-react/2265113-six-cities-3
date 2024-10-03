@@ -8,20 +8,21 @@ type OfferListProps = {
   cardType: number;
 }
 
-export const OfferList = ({ offers, cardType }: OfferListProps) => (
-  <div className={cn(
-    'places__list',
-    {'cities__places-list': cardType === CardType.MAIN},
-    {'tabs__content': cardType === CardType.MAIN},
-    {'near-places__list': cardType === CardType.NEAR}
-  )}
-  >
-    {offers.map((offer) => (
-      <Card
-        key={offer.id}
-        offer={offer}
-        cardType={cardType}
-      />
-    ))}
-  </div>
-);
+export const OfferList = ({ offers, cardType }: OfferListProps) => {
+  const listClassMap = {
+    [CardType.MAIN]: 'cities__places-list tabs__content',
+    [CardType.NEAR]: 'near-places__list'
+  };
+
+  return (
+    <div className={cn('places__list', listClassMap[cardType])}>
+      {offers.map((offer) => (
+        <Card
+          key={offer.id}
+          offer={offer}
+          cardType={cardType}
+        />
+      ))}
+    </div>
+  );
+};
