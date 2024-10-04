@@ -10,7 +10,8 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import { fetchCurrentOfferAction, fetchCommentsAction, fetchNearestOfferAction } from '../../store/api-actions';
 import { selectAuthorizationStatus } from '../../store/user-process/selectors';
 import { selectCurrentOffer, selectNearestOffers, selectOffers } from '../../store/offer-data/selectors';
-import { AuthorizationStatus, CardType, ImagesCount } from '../../const';
+import { AuthorizationStatus, CardType, FavoritesType, ImagesCount } from '../../const';
+import { FavoritesButton } from '../../components/favorites-button/favorites-button';
 
 const status = true;
 
@@ -63,12 +64,7 @@ export const OfferScreen = (): JSX.Element => {
                 <h1 className="offer__name">
                   {currentOffer.title}
                 </h1>
-                <button className={`offer__bookmark-button button ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''}`} type="button">
-                  <svg className="offer__bookmark-icon" width="31" height="33">
-                    <use xlinkHref="#icon-bookmark"></use>
-                  </svg>
-                  <span className="visually-hidden">To bookmarks</span>
-                </button>
+                <FavoritesButton buttonType={FavoritesType.OFFER_SCREEN} offer={currentOffer} />
               </div>
               <PlaceCardRating rating={currentOffer.rating} status={status} />
               <ul className="offer__features">

@@ -11,6 +11,11 @@ export const CardType = {
   NEAR: 2
 };
 
+export const FavoritesType = {
+  CARD: 0,
+  OFFER_SCREEN: 1
+};
+
 export enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
