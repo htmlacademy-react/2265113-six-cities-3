@@ -4,11 +4,12 @@ import { useRef, useEffect } from 'react';
 import { useMap } from '../../hooks/use-map';
 import { City, Offer } from '../../types/offers';
 import { UrlMarkers } from '../../types/offers';
+import { useAppSelector } from '../../hooks';
+import { selectActiveOfferId, selectCurrentOffer } from '../../store/offer-data/selectors';
 
 type MapProps = {
   city: City;
   points: Offer[];
-  selectedOffer?: Offer;
 }
 
 const defaultCustomIcon = new Icon({
@@ -19,9 +20,11 @@ const currentCustomIcon = new Icon({
   iconUrl: UrlMarkers.CURRENT,
 });
 
-export const Map = ({city, points, selectedOffer}: MapProps) => {
+export const Map = ({city, points}: MapProps) => {
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
+  const currentOffer = useAppSelector(selectCurrentOffer);
+  const selectedOffer = useAppSelector(selectActiveOfferId);
 
   useEffect(() => {
     if (map) {
@@ -33,9 +36,7 @@ export const Map = ({city, points, selectedOffer}: MapProps) => {
         });
         marker
           .setIcon(
-            selectedOffer !== undefined && point.id === selectedOffer.id
-              ? currentCustomIcon
-              : defaultCustomIcon
+            currentOffer === null && point.id === selectedOffer ? currentCustomIcon : defaultCustomIcon
           )
           .addTo(map);
 
@@ -43,11 +44,19 @@ export const Map = ({city, points, selectedOffer}: MapProps) => {
         map.setView(new LatLng(city.location.latitude, city.location.longitude), city.location.zoom);
       });
 
+      if (currentOffer) {
+        const marker = new Marker({
+          lat: currentOffer.location.latitude,
+          lng: currentOffer.location.longitude
+        });
+        marker.setIcon(currentCustomIcon).addTo(map);
+      }
+
       return () => {
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, points, selectedOffer, city]);
+  }, [map, points, selectedOffer, city, currentOffer]);
 
   return (
     <div

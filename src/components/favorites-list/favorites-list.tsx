@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom';
-import { Offer, OnOfferClickHandlerProps } from '../../types/offers';
-import { FavoriteCard } from '../favorite-card/favorite-card';
+import { Offer } from '../../types/offers';
+import { Card } from '../card/card';
+import { CardType } from '../../const';
 
 type FavoritesListProps = {
   city: string;
   offers: Offer[];
-  onOfferClickHandler: OnOfferClickHandlerProps;
 }
 
 
-export const FavoritesList = ({ city, offers, onOfferClickHandler }: FavoritesListProps) => (
+export const FavoritesList = ({ city, offers }: FavoritesListProps) => (
   <li className="favorites__locations-items" key={city}>
     <div className="favorites__locations locations locations--current">
       <div className="locations__item">
@@ -20,7 +20,7 @@ export const FavoritesList = ({ city, offers, onOfferClickHandler }: FavoritesLi
     </div>
     <div className="favorites__places">
       {offers.map((offer) => (
-        <FavoriteCard key={offer.id} offer={offer} onOfferClickHandler={onOfferClickHandler} />
+        <Card key={offer.id} offer={offer} cardType={CardType.FAVORITES}/>
       ))}
     </div>
   </li>

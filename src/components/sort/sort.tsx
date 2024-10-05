@@ -1,8 +1,11 @@
 import { AppRoute, Sorts } from '../../const';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { changeSort, toggleSortsMenu } from '../../store/action';
-import { selectSortOffers, selectIsFiltersOpen } from '../../store/selectors';
+import { toggleSortsMenu } from '../../store/sort-process/sort-process';
+import { changeSort } from '../../store/offer-data/offer-data';
+import { selectSortOffers } from '../../store/offer-data/selectors';
+import { selectIsFiltersOpen } from '../../store/sort-process/selectors';
+import { fetchOffersAction } from '../../store/api-actions';
 
 export const Sort = (): JSX.Element => {
   const navigate = useNavigate();
@@ -19,6 +22,11 @@ export const Sort = (): JSX.Element => {
 
   const sortFormChangeHandler = (filter: string) => {
     dispatch(changeSort(filter));
+
+    if (filter === Sorts.POPULAR) {
+      dispatch(fetchOffersAction());
+    }
+
     navigate(AppRoute.Main);
   };
 

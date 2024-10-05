@@ -2,7 +2,8 @@ import { Logo } from '../logo/logo';
 import { Link } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { AppRoute, AuthorizationStatus } from '../../const';
-import { selectUserData, selectAuthorizationStatus, selectFavoriteOffers } from '../../store/selectors';
+import { selectUserData, selectAuthorizationStatus } from '../../store/user-process/selectors';
+import { selectFavoriteOffers } from '../../store/offer-data/selectors';
 import { logoutAction } from '../../store/api-actions';
 
 export const Header = () => {

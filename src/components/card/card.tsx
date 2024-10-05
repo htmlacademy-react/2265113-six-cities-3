@@ -1,89 +1,69 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import cn from 'classnames';
-import { Offer, OnOfferClickHandlerProps } from '../../types/offers';
+import { Offer, OfferClickHandlerProps } from '../../types/offers';
 import { PlaceCardRating } from './place-card-rating';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { updateOfferFavoriteStatusAction, fetchFavoriteOffersAction, fetchOffersAction } from '../../store/api-actions';
-import { AuthorizationStatus, AppRoute } from '../../const';
-import { selectAuthorizationStatus } from '../../store/selectors';
+import { useAppDispatch } from '../../hooks';
+import { fetchCurrentOfferAction, fetchCommentsAction, fetchNearestOfferAction } from '../../store/api-actions';
+import { CardType, FavoritesType } from '../../const';
+import { changeActiveOfferId } from '../../store/offer-data/offer-data';
+import { PlaceCardImage } from './place-card-image';
+import { FavoritesButton } from '../favorites-button/favorites-button';
 
 const status = false;
 
 type CardProps = {
   offer: Offer;
-  onSelect: (selectedId: string | null) => void;
-  isActive: boolean;
-  onOfferClickHandler: OnOfferClickHandlerProps;
-  isNear: boolean;
+  cardType: number;
 }
 
-export const Card = ({offer, onSelect, isActive, onOfferClickHandler, isNear}: CardProps): JSX.Element => {
-  const [favoriteStatus, setFavoriteStatus] = useState<boolean>(offer.isFavorite);
-  const [isUpdating, setIsUpdating] = useState<boolean>(false);
-
-  const authorizationStatus = useAppSelector(selectAuthorizationStatus);
+export const Card = ({offer, cardType}: CardProps): JSX.Element => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
-  const favoriteButtonClickHandler = () => {
-    if (authorizationStatus === AuthorizationStatus.Auth) {
-      setIsUpdating(true);
-      dispatch(updateOfferFavoriteStatusAction({id: offer.id, favoriteStatus}));
-      setFavoriteStatus(!favoriteStatus);
-      dispatch(fetchFavoriteOffersAction);
-      dispatch(fetchOffersAction);
-      navigate(AppRoute.Main);
-    } else {
-      navigate(AppRoute.Login);
-    }
-    setIsUpdating(false);
+  const onOfferClickHandler = ({evt}: OfferClickHandlerProps) => {
+    evt.stopPropagation();
+    dispatch(fetchCurrentOfferAction(offer));
+    dispatch(fetchCommentsAction(offer));
+    dispatch(fetchNearestOfferAction(offer));
+  };
+
+  const cardClassMap = {
+    [CardType.MAIN]: 'cities__card',
+    [CardType.NEAR]: 'near-places__card',
+    [CardType.FAVORITES]: 'favorites__card'
+  };
+
+  const imageWrapperClassMap = {
+    [CardType.MAIN]: 'cities__image-wrapper',
+    [CardType.NEAR]: 'near-places__image-wrapper',
+    [CardType.FAVORITES]: 'favorites__image-wrapper'
   };
 
   return (
-    <article className={cn(
-      'place-card',
-      {'cities__card': !isNear},
-      {'near-places__card': isNear}
-    )}
-    onMouseEnter={() => onSelect(offer.id)}
-    onMouseLeave={() => onSelect(null)}
-    onClick={(evt) => onOfferClickHandler({offer, evt})}
-    data-active={isActive ? 'true' : undefined}
+    <article className={cn('place-card', cardClassMap[cardType])}
+      onMouseEnter={() => dispatch(changeActiveOfferId(offer.id))}
+      onMouseLeave={() => dispatch(changeActiveOfferId(null))}
+      onClick={(evt) => onOfferClickHandler({evt})}
     >
       { offer.isPremium ?
         <div className="place-card__mark">
           <span>Premium</span>
         </div> : '' }
-      <div className={cn(
-        'place-card__image-wrapper',
-        {'cities__image-wrapper': !isNear},
-        {'near-places__image-wrapper': isNear}
-      )}
-      >
+      <div className={cn('place-card__image-wrapper', imageWrapperClassMap[cardType])}>
         <Link to={`/offer/${offer.id}`}>
-          <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image"/>
+          <PlaceCardImage cardType={cardType} offer={offer} />
         </Link>
       </div>
-      <div className="place-card__info">
+      <div className={cn(
+        'place-card__info',
+        {'favorites__card-info': cardType === CardType.FAVORITES}
+      )}
+      >
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={favoriteStatus ?
-            'place-card__bookmark-button button place-card__bookmark-button--active button'
-            : 'place-card__bookmark-button button'} type="button" disabled={isUpdating}
-          onClick={(evt) => {
-            evt.stopPropagation();
-            favoriteButtonClickHandler();
-          }}
-          >
-            <svg className="place-card__bookmark-icon" width="18" height="19">
-              <use xlinkHref="#icon-bookmark"></use>
-            </svg>
-            <span className="visually-hidden">{favoriteStatus ? 'In bookmarks' : 'To bookmarks'}</span>
-          </button>
+          <FavoritesButton buttonType={FavoritesType.CARD} offer={offer} />
         </div>
         <PlaceCardRating rating={offer.rating} status={status} />
         <h2 className="place-card__name">

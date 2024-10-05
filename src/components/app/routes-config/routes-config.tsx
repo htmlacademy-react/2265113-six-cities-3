@@ -1,5 +1,4 @@
 import { RouteConfig } from '../../../types/route-config';
-import { Offer, OnOfferClickHandlerProps } from '../../../types/offers';
 import { AppRoute } from '../../../const';
 import { MainScreen } from '../../../pages/main-screen/main-screen';
 import { LoginScreen } from '../../../pages/login-screen/login-screen';
@@ -7,10 +6,10 @@ import { FavoritesScreen } from '../../../pages/favorites-screen/favorites-scree
 import { OfferScreen } from '../../../pages/offer-screen/offer-screen';
 import { NotFoundScreen } from '../../../pages/not-found-screen/not-found-screen';
 
-export const createRoutesConfig = (offers: Offer[], offerClickHandler: OnOfferClickHandlerProps): RouteConfig[] => [
+export const createRoutesConfig = (): RouteConfig[] => [
   {
     path: AppRoute.Main,
-    element: <MainScreen offers={offers} onOfferClickHandler={offerClickHandler} />
+    element: <MainScreen />
   },
   {
     path: AppRoute.Login,
@@ -18,12 +17,12 @@ export const createRoutesConfig = (offers: Offer[], offerClickHandler: OnOfferCl
   },
   {
     path: AppRoute.Favorites,
-    element: <FavoritesScreen onOfferClickHandler={offerClickHandler} />,
+    element: <FavoritesScreen />,
     private: true,
   },
   {
     path: AppRoute.Offer,
-    element: <OfferScreen onOfferClickHandler={offerClickHandler} />,
+    element: <OfferScreen />,
   },
   {
     path: '*',
