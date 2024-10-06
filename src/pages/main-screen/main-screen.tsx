@@ -58,4 +58,3 @@ export const MainScreen = (): JSX.Element => {
     </div>
   );
 };
-
