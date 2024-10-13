@@ -1,19 +1,12 @@
-import { datatype, name } from 'faker';
 import { NameSpace } from '../../const';
-import { makeFakeUser } from '../../utils/mocks';
+import { makeFakeComments } from '../../utils/mocks';
 import { selectComments } from './selectors';
 
 describe('CommentsData selectors', () => {
-  const mockComments = {
-    id: name.title(),
-    comment: name.title(),
-    date: datatype.string(),
-    rating: datatype.number(),
-    user: makeFakeUser()
-  };
+  const mockComments = makeFakeComments();
   const state = {
     [NameSpace.Comments]: {
-      comments: [mockComments]
+      comments: [...mockComments.comments]
     }
   };
 
