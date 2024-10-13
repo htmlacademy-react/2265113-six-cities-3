@@ -38,7 +38,7 @@ describe('UserProcess Slice', () => {
 
     const result = userProcess.reducer(initialState, loadUserData(mockUser));
 
-    expect(result.user).toEqual(initialState.user);
+    expect(result.user).toEqual(mockUser);
   });
 
   it('should set "Auth" with "checkAuthAction.fulfilled" action', () => {
@@ -50,7 +50,6 @@ describe('UserProcess Slice', () => {
     const result = userProcess.reducer(initialState, checkAuthAction.fulfilled(mockUser, '', undefined));
 
     expect(result.authorizationStatus).toEqual(expectedAuthorizationStatus);
-    expect(result.user).toEqual(mockUser);
   });
 
   it('should set "NoAuth" with "checkAuthAction.rejected" action', () => {

@@ -1,6 +1,6 @@
 import { changeActiveOfferId, changeSort, offerData, resetCurrentOffer, resetSort } from './offer-data';
 import { Sorts } from '../../const';
-import { makeFakeCurrentOffer, makeFakeOffers } from '../../utils/mocks';
+import { makeFakeCurrentOffer, makeFakeOffer, makeFakeOffers } from '../../utils/mocks';
 import { fetchCurrentOfferAction, fetchFavoriteOffersAction, fetchNearestOfferAction, fetchOffersAction, updateOfferFavoriteStatusAction } from '../api-actions';
 
 describe('OfferData Slice', () => {
@@ -138,7 +138,7 @@ describe('OfferData Slice', () => {
 
     const result = offerData.reducer(initialState, fetchOffersAction.fulfilled(mockOffers, '', undefined));
 
-    expect(result.offers).toEqual(initialState.offers);
+    expect(result.offers).toEqual(mockOffers);
     expect(result.isOffersDataLoading).toBe(expectedIsOffersDataLoading);
   });
 
@@ -173,7 +173,7 @@ describe('OfferData Slice', () => {
     const expectedIsOffersDataLoading = false;
     const result = offerData.reducer(initialState, fetchCurrentOfferAction.fulfilled(mockCurrentOffer, '', mockCurrentOffer));
 
-    expect(result.currentOffer).toEqual(initialState.currentOffer);
+    expect(result.currentOffer).toEqual(mockCurrentOffer);
     expect(result.isOffersDataLoading).toBe(expectedIsOffersDataLoading);
   });
 
@@ -208,7 +208,7 @@ describe('OfferData Slice', () => {
 
     const result = offerData.reducer(initialState, fetchFavoriteOffersAction.fulfilled(mockOffers, '', undefined));
 
-    expect(result.favoriteOffers).toEqual(initialState.favoriteOffers);
+    expect(result.favoriteOffers).toEqual(mockOffers);
     expect(result.isOffersDataLoading).toBe(expectedIsOffersDataLoading);
   });
 
@@ -226,18 +226,18 @@ describe('OfferData Slice', () => {
 
     const result = offerData.reducer(initialState, fetchNearestOfferAction.fulfilled(mockOffers, '', mockOffers[0]));
 
-    expect(result.nearestOffers).toEqual(initialState.nearestOffers);
+    expect(result.nearestOffers).toEqual(mockOffers);
   });
 
   it('should set "offers" to array with offers with "updateOfferFavoriteStatusAction.fulfilled"', () => {
-    const mockOffers = makeFakeOffers();
+    const mockOffer = makeFakeOffer();
     const mockFavoriteStatus = true;
 
-    mockOffers[0].isFavorite = mockFavoriteStatus;
+    mockOffer.isFavorite = mockFavoriteStatus;
 
     const initialState = {
-      offers: [...mockOffers],
-      favoriteOffers: [...mockOffers],
+      offers: [mockOffer],
+      favoriteOffers: [],
       currentOffer: null,
       nearestOffers: [],
       isOffersDataLoading: false,
@@ -246,14 +246,14 @@ describe('OfferData Slice', () => {
     };
 
     const result = offerData.reducer(initialState, updateOfferFavoriteStatusAction.fulfilled(
-      mockOffers,
+      [mockOffer],
       '',
       {
-        id: mockOffers[0].id,
+        id: mockOffer.id,
         favoriteStatus: mockFavoriteStatus
       }
     ));
 
-    expect(result.favoriteOffers).toEqual(initialState.favoriteOffers);
+    expect(result.favoriteOffers).toEqual([mockOffer]);
   });
 });
