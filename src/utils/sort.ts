@@ -1,9 +1,9 @@
 import { Offer } from '../types/offers';
 import { Sorts } from '../const';
 
-const sortOffersPriceLowToHigh = (offerA: Offer, offerB: Offer) => offerA.price - offerB.price;
-const sortOffersPriceHighToLow = (offerA: Offer, offerB: Offer) => offerB.price - offerA.price;
-const sortTopRatingFirst = (offerA: Offer, offerB: Offer) => offerB.rating - offerA.rating;
+export const sortOffersPriceLowToHigh = (offerA: Offer, offerB: Offer) => offerA.price - offerB.price;
+export const sortOffersPriceHighToLow = (offerA: Offer, offerB: Offer) => offerB.price - offerA.price;
+export const sortTopRatingFirst = (offerA: Offer, offerB: Offer) => offerB.rating - offerA.rating;
 
 const sortOffersBySort = (sort: (offerA: Offer, offerB: Offer) => number) => (offers: Offer[]) => offers.sort(sort);
 
