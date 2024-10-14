@@ -1,8 +1,10 @@
 import { datatype, internet, name } from 'faker';
+import { Action, ThunkDispatch } from '@reduxjs/toolkit';
 import { CurrentOffer, Offer } from '../types/offers';
 import { Cities } from '../const';
-import { CommentsData } from '../types/state';
+import { CommentsData, State } from '../types/state';
 import { UserData } from '../types/user-data';
+import { createAPI } from '../services/api';
 
 export const makeFakeOffer = (): Offer => ({
   id: name.title(),
@@ -67,3 +69,7 @@ export const makeFakeCurrentOffer = (): CurrentOffer => ({
   bedrooms: 2,
   maxAdults: 2,
 });
+
+export type AppThunkDispatch = ThunkDispatch<State, ReturnType<typeof createAPI>, Action>;
+
+export const extractActionsTypes = (actions: Action<string>[]) => actions.map(({type}) => type);
