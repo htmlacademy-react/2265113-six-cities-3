@@ -34,9 +34,9 @@ describe('Redirect middleware', () => {
     expect(browserHistory.location.pathname).toBe(AppRoute.Login);
   });
 
-  it('should not redirect to "/" with empty action', () => {
-    const emptyAction = { type: '', payload: AppRoute.Main};
+  it('should not redirect if there is no REDIRECT_TO_ROUTE action type', () => {
+    const emptyAction = { type: '', payload: AppRoute.Login};
     store.dispatch(emptyAction);
-    expect(browserHistory.location.pathname).not.toBe(AppRoute.Main);
+    expect(browserHistory.location.pathname).not.toBe(AppRoute.Login);
   });
 });

@@ -4,7 +4,7 @@ import MockAdapter from 'axios-mock-adapter';
 import thunk from 'redux-thunk';
 import { Action } from '@reduxjs/toolkit';
 import { State } from '../types/state';
-import { AppThunkDispatch, extractActionsTypes, makeFakeComments, makeFakeCurrentOffer, makeFakeOffer, makeFakeOffers } from '../utils/mocks';
+import { AppThunkDispatch, extractActionsTypes, makeFakeComments, makeFakeCurrentOffer, makeFakeOffer, makeFakeOffers } from '../tests/mocks';
 import { APIRoute } from '../const';
 import { checkAuthAction, fetchCommentsAction, fetchCurrentOfferAction, fetchFavoriteOffersAction, fetchNearestOfferAction, fetchOffersAction, loginAction, logoutAction, postCommentAction, updateOfferFavoriteStatusAction } from './api-actions';
 import { AuthData } from '../types/auth-data';

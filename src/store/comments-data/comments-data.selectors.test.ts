@@ -1,5 +1,5 @@
 import { NameSpace } from '../../const';
-import { makeFakeComments } from '../../utils/mocks';
+import { makeFakeComments } from '../../tests/mocks';
 import { selectComments } from './selectors';
 
 describe('CommentsData selectors', () => {

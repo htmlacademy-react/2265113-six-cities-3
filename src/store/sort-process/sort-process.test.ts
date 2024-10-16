@@ -19,9 +19,18 @@ describe('SortProcess Slice', () => {
     expect(result).toEqual(initialState);
   });
 
-  it('should toggle sorts menu with "toggleSortsMenu" action', () => {
+  it('should toggle sorts menu on true with "toggleSortsMenu" action', () => {
     const initialState = { isFiltersOpen: false };
     const expectedState = { isFiltersOpen: true };
+
+    const result = sortProcess.reducer(initialState, toggleSortsMenu);
+
+    expect(result).toEqual(expectedState);
+  });
+
+  it('should toggle sorts menu on false with "toggleSortsMenu" action', () => {
+    const initialState = { isFiltersOpen: true };
+    const expectedState = { isFiltersOpen: false };
 
     const result = sortProcess.reducer(initialState, toggleSortsMenu);
 

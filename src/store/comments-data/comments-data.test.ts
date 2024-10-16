@@ -1,4 +1,4 @@
-import { makeFakeComments, makeFakeOffer } from '../../utils/mocks';
+import { makeFakeComments, makeFakeOffer } from '../../tests/mocks';
 import { fetchCommentsAction } from '../api-actions';
 import { commentsData } from './comments-data';
 

@@ -1,7 +1,7 @@
 import { AuthorizationStatus } from '../../const';
 import { checkAuthAction, loginAction, logoutAction } from '../api-actions';
 import { loadUserData, userProcess } from './user-process';
-import { makeFakeUser } from '../../utils/mocks';
+import { makeFakeUser } from '../../tests/mocks';
 
 describe('UserProcess Slice', () => {
   const mockUser = makeFakeUser();

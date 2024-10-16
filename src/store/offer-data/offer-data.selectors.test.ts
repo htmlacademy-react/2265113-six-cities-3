@@ -1,5 +1,5 @@
 import { NameSpace, Sorts } from '../../const';
-import { makeFakeOffers } from '../../utils/mocks';
+import { makeFakeOffers } from '../../tests/mocks';
 import { selectActiveOfferId, selectCurrentOffer, selectFavoriteOffers, selectIsOffersDataLoading, selectNearestOffers, selectOffers, selectSortOffers } from './selectors';
 
 describe('OfferData selectors', () => {

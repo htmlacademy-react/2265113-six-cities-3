@@ -1,6 +1,6 @@
 import { changeActiveOfferId, changeSort, offerData, resetCurrentOffer, resetSort } from './offer-data';
 import { Sorts } from '../../const';
-import { makeFakeCurrentOffer, makeFakeOffer, makeFakeOffers } from '../../utils/mocks';
+import { makeFakeCurrentOffer, makeFakeOffer, makeFakeOffers } from '../../tests/mocks';
 import { fetchCurrentOfferAction, fetchFavoriteOffersAction, fetchNearestOfferAction, fetchOffersAction, updateOfferFavoriteStatusAction } from '../api-actions';
 
 describe('OfferData Slice', () => {
