@@ -22,6 +22,25 @@ describe('Async actions', () => {
     store = mockStoreCreator({ OFFERS: { offers: [] }});
   });
 
+  describe('updateOfferFavoriteStatusAction', () => {
+    it('should dispatch "updateOfferFavoriteStatusAction.pending", "updateOfferFavoriteStatusAction.rejected", when server response 214', async() => {
+      const mockOffer = makeFakeOffer();
+      const mockId = mockOffer.id;
+      const status = mockOffer.isFavorite ? 0 : 1;
+      mockAxiosAdapter.onPost(`${APIRoute.Favorite}/${mockId}/${status}`).reply(214, mockOffer);
+
+      await store.dispatch(updateOfferFavoriteStatusAction({id: mockId, favoriteStatus: mockOffer.isFavorite}));
+
+      const emittedActions = store.getActions();
+      const extractedActionsTypes = extractActionsTypes(emittedActions);
+
+      expect(extractedActionsTypes).toEqual([
+        updateOfferFavoriteStatusAction.pending.type,
+        updateOfferFavoriteStatusAction.rejected.type,
+      ]);
+    });
+  });
+
   describe('fetchOffersAction', () => {
     it('should dispatch "fetchOffersAction.pending", "fetchOffersAction.fulfilled", when server response 200', async() => {
       const mockOffers = [makeFakeOffers()];
@@ -220,25 +239,6 @@ describe('Async actions', () => {
 
       expect(fetchNearestOfferActionFulfilled.payload)
         .toEqual(mockNearestOffers);
-    });
-  });
-
-  describe('updateOfferFavoriteStatusAction', () => {
-    it('should dispatch "updateOfferFavoriteStatusAction.pending", "updateOfferFavoriteStatusAction.rejected", when server response 204', async() => {
-      const mockOffer = makeFakeOffer();
-      const mockId = mockOffer.id;
-      const status = mockOffer.isFavorite ? 0 : 1;
-      mockAxiosAdapter.onPost(`${APIRoute.Favorite}/${mockId}/${status}`).reply(204, mockOffer);
-
-      await store.dispatch(updateOfferFavoriteStatusAction({id: mockId, favoriteStatus: mockOffer.isFavorite}));
-
-      const emittedActions = store.getActions();
-      const extractedActionsTypes = extractActionsTypes(emittedActions);
-
-      expect(extractedActionsTypes).toEqual([
-        updateOfferFavoriteStatusAction.pending.type,
-        updateOfferFavoriteStatusAction.rejected.type,
-      ]);
     });
   });
 });
