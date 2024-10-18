@@ -1,4 +1,4 @@
 export const Loader = (): JSX.Element => (
-  <h3>Loading...</h3>
+  <span data-testid="loader"><h3>Loading...</h3></span>
 );
 
