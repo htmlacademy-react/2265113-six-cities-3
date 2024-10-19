@@ -4,7 +4,7 @@ import { Offer, OfferClickHandlerProps } from '../../types/offers';
 import { PlaceCardRating } from './place-card-rating';
 import { useAppDispatch } from '../../hooks';
 import { fetchCurrentOfferAction, fetchCommentsAction, fetchNearestOfferAction } from '../../store/api-actions';
-import { CardType, FavoritesType } from '../../const';
+import { AppRoute, CardType, FavoritesType } from '../../const';
 import { changeActiveOfferId } from '../../store/offer-data/offer-data';
 import { PlaceCardImage } from './place-card-image';
 import { FavoritesButton } from '../favorites-button/favorites-button';
@@ -43,13 +43,14 @@ export const Card = ({offer, cardType}: CardProps): JSX.Element => {
       onMouseEnter={() => dispatch(changeActiveOfferId(offer.id))}
       onMouseLeave={() => dispatch(changeActiveOfferId(null))}
       onClick={(evt) => onOfferClickHandler({evt})}
+      data-testid='card'
     >
       { offer.isPremium ?
         <div className="place-card__mark">
           <span>Premium</span>
         </div> : '' }
-      <div className={cn('place-card__image-wrapper', imageWrapperClassMap[cardType])}>
-        <Link to={`/offer/${offer.id}`}>
+      <div className={cn('place-card__image-wrapper', imageWrapperClassMap[cardType])} data-testid='cardImageWrapper'>
+        <Link to={`${AppRoute.Offer}${offer.id}`}>
           <PlaceCardImage cardType={cardType} offer={offer} />
         </Link>
       </div>
@@ -67,7 +68,7 @@ export const Card = ({offer, cardType}: CardProps): JSX.Element => {
         </div>
         <PlaceCardRating rating={offer.rating} status={status} />
         <h2 className="place-card__name">
-          <Link to={`/offer/${offer.id}`}>{offer.title}</Link>
+          <Link to={`${AppRoute.Offer}${offer.id}`}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>

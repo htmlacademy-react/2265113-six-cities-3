@@ -10,7 +10,7 @@ export const CommentList = () => {
   const limitedComments = sortedComments.slice(CommentsCount.MIN_COMMENTS_COUNT, CommentsCount.MAX_COMMENTS_COUNT);
   return (
     <>
-      <h2 className="reviews__title">Reviews &middot;
+      <h2 className="reviews__title" data-testid='commentList'>Reviews &middot;
         <span className="reviews__amount">{comments.length}</span>
       </h2>
       <ul className="reviews__list">

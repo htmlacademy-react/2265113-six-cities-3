@@ -15,7 +15,7 @@ export const OfferList = ({ offers, cardType }: OfferListProps) => {
   };
 
   return (
-    <div className={cn('places__list', listClassMap[cardType])}>
+    <div className={cn('places__list', listClassMap[cardType])} data-testid='offerList'>
       {offers.map((offer) => (
         <Card
           key={offer.id}

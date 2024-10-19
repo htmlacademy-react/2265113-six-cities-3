@@ -31,7 +31,7 @@ export const Sort = (): JSX.Element => {
   };
 
   return (
-    <form className="places__sorting" action="#" method="get"
+    <form className="places__sorting" action="#" method="get" data-testid='sort'
       onClick={sortFormClickHandler}
     >
       <span className="places__sorting-caption">Sort by</span>

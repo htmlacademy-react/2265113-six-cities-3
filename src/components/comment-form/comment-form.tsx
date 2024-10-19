@@ -72,6 +72,7 @@ export const CommentForm = () => {
               onChange={inputStarsCountChangeHandler}
               checked={formData.rating === value}
               key={`input-${value}`}
+              data-testid={`formRating-${value}`}
             />
             <label
               htmlFor={`${value}-stars`}
@@ -95,6 +96,7 @@ export const CommentForm = () => {
         onChange={textareaChangeHandler}
         minLength={CommentLength.MIN_LENGTH}
         maxLength={CommentLength.MAX_LENGTH}
+        data-testid='formComment'
       >
       </textarea>
       <div className="reviews__button-wrapper">

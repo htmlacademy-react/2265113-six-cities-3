@@ -37,7 +37,7 @@ export const OfferScreen = (): JSX.Element => {
   }
 
   return (
-    <div className="page">
+    <div className="page" data-testid="offerScreen">
       <Helmet>
         <title>Шесть городов. Предложение</title>
       </Helmet>

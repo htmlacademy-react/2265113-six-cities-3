@@ -51,7 +51,7 @@ export const FavoritesButton = ({ buttonType, offer }: FavoritesButtonProps): JS
   };
 
   return (
-    <button className={cn(favoritesClassMap[buttonType])} type="button" disabled={isUpdating}
+    <button className={cn(favoritesClassMap[buttonType])} type="button" data-testid='favoriteButton' disabled={isUpdating}
       onClick={(evt) => {
         evt.stopPropagation();
         favoriteButtonClickHandler();

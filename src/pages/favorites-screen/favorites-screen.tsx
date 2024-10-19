@@ -5,6 +5,7 @@ import { Offer } from '../../types/offers';
 import { GroupedOffers } from '../../components/grouped-offers/grouped-offers';
 import { useAppSelector } from '../../hooks';
 import { selectFavoriteOffers } from '../../store/offer-data/selectors';
+import { FavoritesEmptyList } from '../../components/favorites-empty-list/favorites-empty-list';
 
 export const FavoritesScreen = (): JSX.Element => {
   const offers = useAppSelector(selectFavoriteOffers);
@@ -15,20 +16,27 @@ export const FavoritesScreen = (): JSX.Element => {
   }, {} as Record<string, Offer[]>);
 
   return (
-    <div className="page">
+    <div className="page" data-testid='favoritesScreen'>
       <Helmet>
         <title>Шесть городов. Избранное</title>
       </Helmet>
       <Header />
 
-      <main className="page__main page__main--favorites">
-        <div className="page__favorites-container container">
-          <section className="favorites">
-            <h1 className="favorites__title">Saved listing</h1>
-            <GroupedOffers groupedOffers={groupedOffers} />
-          </section>
-        </div>
-      </main>
+      {
+        offers.length !== 0
+          ?
+          (
+            <main className="page__main page__main--favorites">
+              <div className="page__favorites-container container">
+                <section className="favorites">
+                  <h1 className="favorites__title">Saved listing</h1>
+                  <GroupedOffers groupedOffers={groupedOffers} />
+                </section>
+              </div>
+            </main>
+          )
+          : <FavoritesEmptyList />
+      }
 
       <footer className="footer container">
         <Link className="footer__logo-link" to="/">
@@ -36,5 +44,6 @@ export const FavoritesScreen = (): JSX.Element => {
         </Link>
       </footer>
     </div>
+
   );
 };

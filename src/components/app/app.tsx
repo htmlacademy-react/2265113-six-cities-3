@@ -6,8 +6,6 @@ import { createRoutesConfig } from './routes-config/routes-config';
 import { selectIsOffersDataLoading } from '../../store/offer-data/selectors';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { Loader } from '../loader/loader';
-import { HistoryRouter } from '../history-route/history-route';
-import browserHistory from '../../browser-history';
 import { selectAuthorizationStatus } from '../../store/user-process/selectors';
 import { checkAuthAction, fetchFavoriteOffersAction, fetchOffersAction } from '../../store/api-actions';
 import { useEffect } from 'react';
@@ -53,11 +51,9 @@ export const App = (): JSX.Element => {
 
   return (
     <HelmetProvider>
-      <HistoryRouter history={browserHistory}>
-        <Routes>
-          {routes.map(renderRoute)}
-        </Routes>
-      </HistoryRouter>
+      <Routes>
+        {routes.map(renderRoute)}
+      </Routes>
     </HelmetProvider>
   );
 };

@@ -6,7 +6,7 @@ type GroupedOffersProps = {
 }
 
 export const GroupedOffers = ({ groupedOffers }: GroupedOffersProps) => (
-  <ul className="favorites__list">
+  <ul className="favorites__list" data-testid='groupedOffers'>
     {Object.entries(groupedOffers).map(([city, offers]) => (
       <FavoritesList key={city} city={city} offers={offers} />
     ))}

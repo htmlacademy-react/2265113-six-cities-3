@@ -63,6 +63,7 @@ export const Map = ({city, points}: MapProps) => {
       style={{
         height: '100%'
       }}
+      data-testid='map'
       ref={mapRef}
     />
   );

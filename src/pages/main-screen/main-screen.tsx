@@ -17,7 +17,7 @@ export const MainScreen = (): JSX.Element => {
   const offersByCity = offers.filter((offer) => offer.city.name === currentCity.name);
 
   return (
-    <div className="page page--gray page--main">
+    <div className="page page--gray page--main" data-testid='mainScreen'>
       <Helmet>
         <title>Шесть городов. Главная</title>
       </Helmet>
