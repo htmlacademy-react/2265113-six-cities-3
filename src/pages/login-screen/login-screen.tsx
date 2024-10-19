@@ -4,12 +4,16 @@ import { useRef, FormEvent } from 'react';
 import { Logo } from '../../components/logo/logo';
 import { useAppDispatch } from '../../hooks';
 import { loginAction } from '../../store/api-actions';
+import { Cities } from '../../const';
+import { changeCity } from '../../store/city-process/city-process';
 
 export const LoginScreen = (): JSX.Element => {
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const dispatch = useAppDispatch();
+
+  const randomCity = Object.values(Cities)[Math.floor(Math.random() * Object.entries(Cities).length)];
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -55,8 +59,11 @@ export const LoginScreen = (): JSX.Element => {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <Link className="locations__item-link" to="/">
-                <span>Amsterdam</span>
+              <Link className="locations__item-link" to="/"onClick={() => {
+                dispatch(changeCity(randomCity));
+              }}
+              >
+                <span>{randomCity.name}</span>
               </Link>
             </div>
           </section>
