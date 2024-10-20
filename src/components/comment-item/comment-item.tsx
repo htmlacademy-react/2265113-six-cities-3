@@ -8,7 +8,7 @@ export const CommentItem = ({comment}: CommentItemProps) => {
   const formattedDate = new Date(comment.date).toLocaleDateString('en-US', {year: 'numeric', month: 'long'});
 
   return (
-    <li className="reviews__item">
+    <li className="reviews__item" data-testid='commentItem'>
       <div className="reviews__user user">
         <div className="reviews__avatar-wrapper user__avatar-wrapper">
           <img className="reviews__avatar user__avatar" src={comment.user.avatarUrl} width="54" height="54" alt="Reviews avatar"/>

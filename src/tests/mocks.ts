@@ -1,7 +1,7 @@
 import { datatype, internet, name } from 'faker';
 import { Action, ThunkDispatch } from '@reduxjs/toolkit';
 import { CurrentOffer, Offer } from '../types/offers';
-import { Cities } from '../const';
+import { AuthorizationStatus, Cities } from '../const';
 import { CommentsData, State } from '../types/state';
 import { UserData } from '../types/user-data';
 import { createAPI } from '../services/api';
@@ -73,3 +73,29 @@ export const makeFakeCurrentOffer = (): CurrentOffer => ({
 export type AppThunkDispatch = ThunkDispatch<State, ReturnType<typeof createAPI>, Action>;
 
 export const extractActionsTypes = (actions: Action<string>[]) => actions.map(({type}) => type);
+
+export const makeFakeStore = (initialState?: Partial<State>): State => ({
+  USER: {
+    authorizationStatus: AuthorizationStatus.Auth,
+    user: null
+  },
+  OFFERS: {
+    offers: makeFakeOffers(),
+    favoriteOffers: [],
+    currentOffer: makeFakeCurrentOffer(),
+    nearestOffers: makeFakeOffers(),
+    isOffersDataLoading: false,
+    sortOffers: '',
+    activeOfferId: null
+  },
+  COMMENTS: {
+    comments: makeFakeComments().comments
+  },
+  SORT: {
+    isFiltersOpen: false
+  },
+  CITY: {
+    city: Cities.PARIS
+  },
+  ...initialState ?? {},
+});

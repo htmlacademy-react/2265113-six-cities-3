@@ -10,7 +10,7 @@ type FavoritesListProps = {
 
 
 export const FavoritesList = ({ city, offers }: FavoritesListProps) => (
-  <li className="favorites__locations-items" key={city}>
+  <li className="favorites__locations-items" key={city} data-testid='favoritesList'>
     <div className="favorites__locations locations locations--current">
       <div className="locations__item">
         <Link className="locations__item-link" to="/">

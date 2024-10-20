@@ -14,6 +14,7 @@ export const PlaceCardImage = ({ cardType, offer }: PlaceCardImageProps): JSX.El
     alt: 'Place image',
     width: isFavorites ? '150' : '260',
     height: isFavorites ? '110' : '200',
+    'data-testid': isFavorites ? 'cardImg' : 'cardImgBig',
   };
 
   return (
