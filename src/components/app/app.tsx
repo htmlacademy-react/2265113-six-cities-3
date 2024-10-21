@@ -11,7 +11,6 @@ import { checkAuthAction, fetchFavoriteOffersAction, fetchOffersAction } from '.
 import { useEffect } from 'react';
 import { AuthorizationStatus } from '../../const';
 
-
 export const App = (): JSX.Element => {
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);
   const routes = createRoutesConfig();

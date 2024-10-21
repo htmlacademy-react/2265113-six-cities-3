@@ -19,7 +19,7 @@ type CardProps = {
 export const Card = ({offer, cardType}: CardProps): JSX.Element => {
   const dispatch = useAppDispatch();
 
-  const onOfferClickHandler = ({evt}: OfferClickHandlerProps) => {
+  const handleOfferClick = ({evt}: OfferClickHandlerProps) => {
     evt.stopPropagation();
     dispatch(fetchCurrentOfferAction(offer));
     dispatch(fetchCommentsAction(offer));
@@ -42,7 +42,7 @@ export const Card = ({offer, cardType}: CardProps): JSX.Element => {
     <article className={cn('place-card', cardClassMap[cardType])}
       onMouseEnter={() => dispatch(changeActiveOfferId(offer.id))}
       onMouseLeave={() => dispatch(changeActiveOfferId(null))}
-      onClick={(evt) => onOfferClickHandler({evt})}
+      onClick={(evt) => handleOfferClick({evt})}
       data-testid='card'
     >
       { offer.isPremium ?

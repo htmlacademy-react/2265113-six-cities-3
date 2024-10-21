@@ -1,4 +1,4 @@
-import { changeActiveOfferId, changeSort, offerData, resetCurrentOffer, resetSort } from './offer-data';
+import { changeActiveOfferId, changeSort, offerData, resetSort } from './offer-data';
 import { Sorts } from '../../const';
 import { makeFakeCurrentOffer, makeFakeOffer, makeFakeOffers } from '../../tests/mocks';
 import { fetchCurrentOfferAction, fetchFavoriteOffersAction, fetchNearestOfferAction, fetchOffersAction, updateOfferFavoriteStatusAction } from '../api-actions';
@@ -87,23 +87,6 @@ describe('OfferData Slice', () => {
     const result = offerData.reducer(initialState, changeActiveOfferId(expectedActiveOfferId));
 
     expect(result.activeOfferId).toBe(expectedActiveOfferId);
-  });
-
-  it('should reset currentOffer with "resetCurrentOffer" action', () => {
-    const initialState = {
-      offers: [],
-      favoriteOffers: [],
-      currentOffer: makeFakeCurrentOffer(),
-      nearestOffers: [],
-      isOffersDataLoading: false,
-      sortOffers: Sorts.TOP_RATED_FIRST,
-      activeOfferId: null
-    };
-    const expectedCurrentOffer = null;
-
-    const result = offerData.reducer(initialState, resetCurrentOffer);
-
-    expect(result.currentOffer).toEqual(expectedCurrentOffer);
   });
 
   it('should set "isOffersDataLoading" to "true" with "fetchOffersAction.pending"', () => {
