@@ -27,9 +27,6 @@ export const offerData = createSlice({
     },
     changeActiveOfferId: (state, action: PayloadAction<string | null>) => {
       state.activeOfferId = action.payload;
-    },
-    resetCurrentOffer: (state) => {
-      state.currentOffer = null;
     }
   },
   extraReducers(builder) {
@@ -65,4 +62,4 @@ export const offerData = createSlice({
   }
 });
 
-export const { changeSort, resetSort, changeActiveOfferId, resetCurrentOffer } = offerData.actions;
+export const { changeSort, resetSort, changeActiveOfferId } = offerData.actions;

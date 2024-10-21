@@ -6,6 +6,8 @@ import { City, Offer } from '../../types/offers';
 import { UrlMarkers } from '../../types/offers';
 import { useAppSelector } from '../../hooks';
 import { selectActiveOfferId, selectCurrentOffer } from '../../store/offer-data/selectors';
+import { useLocation } from 'react-router-dom';
+import { AppRoute } from '../../const';
 
 type MapProps = {
   city: City;
@@ -25,6 +27,7 @@ export const Map = ({city, points}: MapProps) => {
   const map = useMap(mapRef, city);
   const currentOffer = useAppSelector(selectCurrentOffer);
   const selectedOffer = useAppSelector(selectActiveOfferId);
+  const location = useLocation();
 
   useEffect(() => {
     if (map) {
@@ -36,7 +39,7 @@ export const Map = ({city, points}: MapProps) => {
         });
         marker
           .setIcon(
-            currentOffer === null && point.id === selectedOffer ? currentCustomIcon : defaultCustomIcon
+            location.pathname === `${AppRoute.Main}` && point.id === selectedOffer ? currentCustomIcon : defaultCustomIcon
           )
           .addTo(map);
 
@@ -44,7 +47,7 @@ export const Map = ({city, points}: MapProps) => {
         map.setView(new LatLng(city.location.latitude, city.location.longitude), city.location.zoom);
       });
 
-      if (currentOffer) {
+      if (currentOffer && location.pathname === `${AppRoute.Offer}${currentOffer.id}`) {
         const marker = new Marker({
           lat: currentOffer.location.latitude,
           lng: currentOffer.location.longitude

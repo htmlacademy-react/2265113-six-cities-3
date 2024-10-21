@@ -1,4 +1,4 @@
 import { createAction } from '@reduxjs/toolkit';
 import { AppRoute } from '../const';
 
-export const redirectToRoute = createAction<AppRoute>('REDIRECT_TO_ROUTE');
+export const redirectToRoute = createAction<AppRoute>('navigation/redirectToRoute');

@@ -22,7 +22,7 @@ export const FavoritesButton = ({ buttonType, offer }: FavoritesButtonProps): JS
 
   const isCard = buttonType === FavoritesType.CARD;
 
-  const favoriteButtonClickHandler = () => {
+  const handleFavoriteButtonClick = () => {
     if (authorizationStatus === AuthorizationStatus.Auth) {
       setIsUpdating(true);
       dispatch(updateOfferFavoriteStatusAction({id: offer.id, favoriteStatus}));
@@ -54,7 +54,7 @@ export const FavoritesButton = ({ buttonType, offer }: FavoritesButtonProps): JS
     <button className={cn(favoritesClassMap[buttonType])} type="button" data-testid='favoriteButton' disabled={isUpdating}
       onClick={(evt) => {
         evt.stopPropagation();
-        favoriteButtonClickHandler();
+        handleFavoriteButtonClick();
       }}
     >
       <svg {...svgAttributes}>

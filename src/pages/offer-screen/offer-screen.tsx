@@ -21,12 +21,12 @@ export const OfferScreen = (): JSX.Element => {
   const currentOffer = useAppSelector(selectCurrentOffer);
   const { id } = useParams();
 
-  const curOffer = offers.find((elem) => elem.id === id);
+  const currentOfferById = offers.find((elem) => elem.id === id);
 
-  if (curOffer && !currentOffer) {
-    dispatch(fetchCurrentOfferAction(curOffer));
-    dispatch(fetchCommentsAction(curOffer));
-    dispatch(fetchNearestOfferAction(curOffer));
+  if (currentOfferById && !currentOffer) {
+    dispatch(fetchCurrentOfferAction(currentOfferById));
+    dispatch(fetchCommentsAction(currentOfferById));
+    dispatch(fetchNearestOfferAction(currentOfferById));
   }
 
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);
