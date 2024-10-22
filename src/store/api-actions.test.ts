@@ -14,8 +14,8 @@ import * as tokenStorage from '../services/token';
 describe('Async actions', () => {
   const axios = createAPI();
   const mockAxiosAdapter = new MockAdapter(axios);
-  const middleware = [thunk.withExtraArgument(axios)];
-  const mockStoreCreator = configureMockStore<State, Action<string>, AppThunkDispatch>(middleware);
+  const middlewares = [thunk.withExtraArgument(axios)];
+  const mockStoreCreator = configureMockStore<State, Action<string>, AppThunkDispatch>(middlewares);
   let store: ReturnType<typeof mockStoreCreator>;
 
   beforeEach(() => {

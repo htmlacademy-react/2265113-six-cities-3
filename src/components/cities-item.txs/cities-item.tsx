@@ -16,14 +16,14 @@ export const CitiesItem = ({city}: CitiesItemProps): JSX.Element => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const onCityClick = () => {
+  const handleCityClick = () => {
     dispatch(changeCity(city));
     dispatch(resetSort());
     navigate(AppRoute.Main);
   };
 
   return (
-    <li className="locations__item" key={city.name} onClick={onCityClick} data-testid='citiesItem'>
+    <li className="locations__item" key={city.name} onClick={handleCityClick} data-testid='citiesItem'>
       <Link className={`locations__item-link tabs__item ${currentCity.name === city.name ? 'tabs__item--active' : ''}`} to="/">
         <span>{city.name}</span>
       </Link>

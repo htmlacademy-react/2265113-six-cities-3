@@ -4,7 +4,7 @@ import { Offer, OfferClickHandlerProps } from '../../types/offers';
 import { PlaceCardRating } from './place-card-rating';
 import { useAppDispatch } from '../../hooks';
 import { fetchCurrentOfferAction, fetchCommentsAction, fetchNearestOfferAction } from '../../store/api-actions';
-import { AppRoute, CardType, FavoritesType } from '../../const';
+import { BASE_OFFER_ROUTE, CardType, FavoritesType } from '../../const';
 import { changeActiveOfferId } from '../../store/offer-data/offer-data';
 import { PlaceCardImage } from './place-card-image';
 import { FavoritesButton } from '../favorites-button/favorites-button';
@@ -42,15 +42,14 @@ export const Card = ({offer, cardType}: CardProps): JSX.Element => {
     <article className={cn('place-card', cardClassMap[cardType])}
       onMouseEnter={() => dispatch(changeActiveOfferId(offer.id))}
       onMouseLeave={() => dispatch(changeActiveOfferId(null))}
-      onClick={(evt) => handleOfferClick({evt})}
       data-testid='card'
     >
       { offer.isPremium ?
         <div className="place-card__mark">
           <span>Premium</span>
         </div> : '' }
-      <div className={cn('place-card__image-wrapper', imageWrapperClassMap[cardType])} data-testid='cardImageWrapper'>
-        <Link to={`${AppRoute.Offer}${offer.id}`}>
+      <div className={cn('place-card__image-wrapper', imageWrapperClassMap[cardType])} data-testid='cardImageWrapper' onClick={(evt) => handleOfferClick({evt})}>
+        <Link to={`${BASE_OFFER_ROUTE}${offer.id}`}>
           <PlaceCardImage cardType={cardType} offer={offer} />
         </Link>
       </div>
@@ -68,7 +67,7 @@ export const Card = ({offer, cardType}: CardProps): JSX.Element => {
         </div>
         <PlaceCardRating rating={offer.rating} status={status} />
         <h2 className="place-card__name">
-          <Link to={`${AppRoute.Offer}${offer.id}`}>{offer.title}</Link>
+          <Link to={`${BASE_OFFER_ROUTE}${offer.id}`} onClick={(evt) => handleOfferClick({evt})}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>
