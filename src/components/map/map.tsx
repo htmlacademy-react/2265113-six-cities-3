@@ -59,7 +59,7 @@ export const Map = ({city, points}: MapProps) => {
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, points, selectedOffer, city, currentOffer]);
+  }, [map, points, selectedOffer, city, currentOffer, location.pathname]);
 
   return (
     <div

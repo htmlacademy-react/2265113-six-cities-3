@@ -1,7 +1,9 @@
+export const BASE_OFFER_ROUTE = '/offer/';
+
 export enum AppRoute {
   Login = '/login',
   Favorites = '/favorites',
-  Offer = '/offer/:id',
+  Offer = `${BASE_OFFER_ROUTE}:id`,
   Main = '/'
 }
 
