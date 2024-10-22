@@ -20,7 +20,7 @@ export const CommentForm = () => {
 
   const isDisabled = formData.rating === 0 || formData.comment.length < CommentLength.MIN_LENGTH || formData.comment.length > CommentLength.MAX_LENGTH;
 
-  const inputStarsCountChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => {
+  const handleInputStarsCountChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const value = Number(evt.target.value);
     if (currentOffer) {
       setFormData({
@@ -30,7 +30,7 @@ export const CommentForm = () => {
     }
   };
 
-  const textareaChangeHandler = (evt: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleTextareaChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
     const {value} = evt.target;
     if (currentOffer) {
       setFormData({
@@ -40,7 +40,7 @@ export const CommentForm = () => {
     }
   };
 
-  const formSubmitHandler = (evt: FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     dispatch(postCommentAction(formData));
 
@@ -58,7 +58,7 @@ export const CommentForm = () => {
   };
 
   return (
-    <form className="reviews__form form" action="#" method="post" onSubmit={formSubmitHandler}>
+    <form className="reviews__form form" action="#" method="post" onSubmit={handleFormSubmit}>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         {[5, 4, 3, 2, 1].map((value) => (
@@ -69,7 +69,7 @@ export const CommentForm = () => {
               value={value}
               id={`${value}-stars`}
               type="radio"
-              onChange={inputStarsCountChangeHandler}
+              onChange={handleInputStarsCountChange}
               checked={formData.rating === value}
               key={`input-${value}`}
               data-testid={`formRating-${value}`}
@@ -93,7 +93,7 @@ export const CommentForm = () => {
         name="comment"
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={formData.comment}
-        onChange={textareaChangeHandler}
+        onChange={handleTextareaChange}
         minLength={CommentLength.MIN_LENGTH}
         maxLength={CommentLength.MAX_LENGTH}
         data-testid='formComment'
