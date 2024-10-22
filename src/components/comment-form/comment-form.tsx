@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { postCommentAction } from '../../store/api-actions';
 import { selectCurrentOffer } from '../../store/offer-data/selectors';
 import { CommentToSend } from '../../types/comments';
-import { AppRoute, CommentLength } from '../../const';
+import { BASE_OFFER_ROUTE, CommentLength } from '../../const';
 import { fetchCommentsAction } from '../../store/api-actions';
 
 export const CommentForm = () => {
@@ -49,7 +49,7 @@ export const CommentForm = () => {
     }
 
     dispatch(fetchCommentsAction(currentOffer));
-    navigate(`${AppRoute.Offer}${currentOffer.id}`);
+    navigate(`${BASE_OFFER_ROUTE}${currentOffer.id}`);
     setFormData({
       ...formData,
       comment: '',
