@@ -23,7 +23,6 @@ export const App = (): JSX.Element => {
 
     if (authorizationStatus === AuthorizationStatus.Auth) {
       dispatch(fetchFavoriteOffersAction());
-      dispatch(fetchOffersAction());
     }
   }, [authorizationStatus, dispatch]);
 
