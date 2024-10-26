@@ -125,6 +125,23 @@ describe('OfferData Slice', () => {
     expect(result.isOffersDataLoading).toBe(expectedIsOffersDataLoading);
   });
 
+  it('should set "isOffersDataLoading" to "false" with "fetchOffersAction.rejected"', () => {
+    const initialState = {
+      offers: [],
+      favoriteOffers: [],
+      currentOffer: null,
+      nearestOffers: [],
+      isOffersDataLoading: true,
+      sortOffers: Sorts.TOP_RATED_FIRST,
+      activeOfferId: null
+    };
+    const expectedIsOffersDataLoading = false;
+
+    const result = offerData.reducer(initialState, fetchOffersAction.rejected);
+
+    expect(result.isOffersDataLoading).toBe(expectedIsOffersDataLoading);
+  });
+
   it('should set "isOffersDataLoading" to "true" with "fetchCurrentOfferAction.pending"', () => {
     const initialState = {
       offers: [],

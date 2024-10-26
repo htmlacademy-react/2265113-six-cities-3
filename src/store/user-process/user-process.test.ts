@@ -1,6 +1,6 @@
 import { AuthorizationStatus } from '../../const';
 import { checkAuthAction, loginAction, logoutAction } from '../api-actions';
-import { loadUserData, userProcess } from './user-process';
+import { userProcess } from './user-process';
 import { makeFakeUser } from '../../tests/mocks';
 
 describe('UserProcess Slice', () => {
@@ -30,26 +30,18 @@ describe('UserProcess Slice', () => {
     expect(result).toEqual(initialState);
   });
 
-  it('should set user with "loadUserData" action', () => {
-    const initialState = {
-      authorizationStatus: AuthorizationStatus.NoAuth,
-      user: null
-    };
-
-    const result = userProcess.reducer(initialState, loadUserData(mockUser));
-
-    expect(result.user).toEqual(mockUser);
-  });
-
   it('should set "Auth" with "checkAuthAction.fulfilled" action', () => {
     const initialState = {
       authorizationStatus: AuthorizationStatus.NoAuth,
       user: null
     };
-    const expectedAuthorizationStatus = AuthorizationStatus.Auth;
+    const expectedState = {
+      authorizationStatus: AuthorizationStatus.Auth,
+      user: mockUser
+    };
     const result = userProcess.reducer(initialState, checkAuthAction.fulfilled(mockUser, '', undefined));
 
-    expect(result.authorizationStatus).toEqual(expectedAuthorizationStatus);
+    expect(result).toEqual(expectedState);
   });
 
   it('should set "NoAuth" with "checkAuthAction.rejected" action', () => {

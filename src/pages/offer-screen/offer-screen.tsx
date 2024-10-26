@@ -15,6 +15,11 @@ import { FavoritesButton } from '../../components/favorites-button/favorites-but
 
 const status = true;
 
+const NearestOffers = {
+  FIRST_OFFER: 0,
+  LAST_OFFER: 3
+};
+
 export const OfferScreen = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const offers = useAppSelector(selectOffers);
@@ -30,7 +35,7 @@ export const OfferScreen = (): JSX.Element => {
   }
 
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);
-  const nearestOffers = useAppSelector(selectNearestOffers).slice(0, 3);
+  const nearestOffers = useAppSelector(selectNearestOffers).slice(NearestOffers.FIRST_OFFER, NearestOffers.LAST_OFFER);
 
   if (!currentOffer) {
     return <div>Offer not found</div>;

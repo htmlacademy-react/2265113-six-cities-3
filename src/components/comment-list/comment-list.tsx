@@ -6,7 +6,7 @@ import { CommentsCount } from '../../const';
 export const CommentList = () => {
   const comments = useAppSelector(selectComments);
 
-  const sortedComments = [...comments].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  const sortedComments = [...comments].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   const limitedComments = sortedComments.slice(CommentsCount.MIN_COMMENTS_COUNT, CommentsCount.MAX_COMMENTS_COUNT);
   return (
     <>

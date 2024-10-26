@@ -7,6 +7,8 @@ import { CommentToSend } from '../../types/comments';
 import { BASE_OFFER_ROUTE, CommentLength } from '../../const';
 import { fetchCommentsAction } from '../../store/api-actions';
 
+const MAX_RATING_VALUE = 5;
+
 export const CommentForm = () => {
   const currentOffer = useAppSelector(selectCurrentOffer);
   const [formData, setFormData] = useState({
@@ -61,7 +63,7 @@ export const CommentForm = () => {
     <form className="reviews__form form" action="#" method="post" onSubmit={handleFormSubmit}>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
-        {[5, 4, 3, 2, 1].map((value) => (
+        {Array.from({ length: MAX_RATING_VALUE }, (_, i) => MAX_RATING_VALUE - i).map((value) => (
           <React.Fragment key={value}>
             <input
               className="form__rating-input visually-hidden"
@@ -77,7 +79,7 @@ export const CommentForm = () => {
             <label
               htmlFor={`${value}-stars`}
               className="reviews__rating-label form__rating-label"
-              title={['perfect', 'good', 'not bad', 'badly', 'terribly'][5 - value]}
+              title={['perfect', 'good', 'not bad', 'badly', 'terribly'][MAX_RATING_VALUE - value]}
               key={`label-${value}`}
             >
               <svg className="form__star-image" width="37" height="33">
