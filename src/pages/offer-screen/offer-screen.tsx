@@ -12,6 +12,7 @@ import { selectAuthorizationStatus } from '../../store/user-process/selectors';
 import { selectCurrentOffer, selectNearestOffers, selectOffers } from '../../store/offer-data/selectors';
 import { AuthorizationStatus, CardType, FavoritesType, ImagesCount } from '../../const';
 import { FavoritesButton } from '../../components/favorites-button/favorites-button';
+import { Offer } from '../../types/offers';
 
 const status = true;
 
@@ -69,7 +70,7 @@ export const OfferScreen = (): JSX.Element => {
                 <h1 className="offer__name">
                   {currentOffer.title}
                 </h1>
-                <FavoritesButton buttonType={FavoritesType.OFFER_SCREEN} offer={currentOffer} />
+                <FavoritesButton buttonType={FavoritesType.OFFER_SCREEN} offer={currentOfferById as Offer} />
               </div>
               <PlaceCardRating rating={currentOffer.rating} status={status} />
               <ul className="offer__features">

@@ -5,7 +5,7 @@ import { AppRoute, AuthorizationStatus, FavoritesType } from '../../const';
 import { Offer } from '../../types/offers';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { selectAuthorizationStatus } from '../../store/user-process/selectors';
-import { fetchFavoriteOffersAction, fetchOffersAction, updateOfferFavoriteStatusAction } from '../../store/api-actions';
+import { fetchFavoriteOffersAction, updateOfferFavoriteStatusAction } from '../../store/api-actions';
 
 type FavoritesButtonProps = {
   offer: Offer;
@@ -13,7 +13,6 @@ type FavoritesButtonProps = {
 }
 
 export const FavoritesButton = ({ buttonType, offer }: FavoritesButtonProps): JSX.Element => {
-  const [favoriteStatus, setFavoriteStatus] = useState<boolean>(offer.isFavorite);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);
@@ -25,10 +24,8 @@ export const FavoritesButton = ({ buttonType, offer }: FavoritesButtonProps): JS
   const handleFavoriteButtonClick = () => {
     if (authorizationStatus === AuthorizationStatus.Auth) {
       setIsUpdating(true);
-      dispatch(updateOfferFavoriteStatusAction({id: offer.id, favoriteStatus}));
-      setFavoriteStatus(!favoriteStatus);
+      dispatch(updateOfferFavoriteStatusAction({id: offer.id, favoriteStatus: offer.isFavorite}));
       dispatch(fetchFavoriteOffersAction);
-      dispatch(fetchOffersAction);
     } else {
       navigate(AppRoute.Login);
     }
@@ -42,10 +39,10 @@ export const FavoritesButton = ({ buttonType, offer }: FavoritesButtonProps): JS
   };
 
   const favoritesClassMap = {
-    [FavoritesType.CARD]: favoriteStatus ?
+    [FavoritesType.CARD]: offer.isFavorite ?
       'place-card__bookmark-button button place-card__bookmark-button--active'
       : 'place-card__bookmark-button button',
-    [FavoritesType.OFFER_SCREEN]: favoriteStatus ?
+    [FavoritesType.OFFER_SCREEN]: offer.isFavorite ?
       'offer__bookmark-button button offer__bookmark-button--active'
       : 'offer__bookmark-button button',
   };
@@ -60,7 +57,7 @@ export const FavoritesButton = ({ buttonType, offer }: FavoritesButtonProps): JS
       <svg {...svgAttributes}>
         <use xlinkHref="#icon-bookmark"></use>
       </svg>
-      <span className="visually-hidden">{favoriteStatus ? 'In bookmarks' : 'To bookmarks'}</span>
+      <span className="visually-hidden">{offer.isFavorite ? 'In bookmarks' : 'To bookmarks'}</span>
     </button>
   );
 };
