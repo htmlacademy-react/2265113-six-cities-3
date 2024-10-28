@@ -5,7 +5,7 @@ import { AppRoute, AuthorizationStatus, FavoritesType } from '../../const';
 import { Offer } from '../../types/offers';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { selectAuthorizationStatus } from '../../store/user-process/selectors';
-import { fetchFavoriteOffersAction, updateOfferFavoriteStatusAction } from '../../store/api-actions';
+import { updateOfferFavoriteStatusAction } from '../../store/api-actions';
 
 type FavoritesButtonProps = {
   offer: Offer;
@@ -25,7 +25,6 @@ export const FavoritesButton = ({ buttonType, offer }: FavoritesButtonProps): JS
     if (authorizationStatus === AuthorizationStatus.Auth) {
       setIsUpdating(true);
       dispatch(updateOfferFavoriteStatusAction({id: offer.id, favoriteStatus: offer.isFavorite}));
-      dispatch(fetchFavoriteOffersAction);
     } else {
       navigate(AppRoute.Login);
     }

@@ -1,9 +1,9 @@
 import { render, screen} from '@testing-library/react';
 import { MemoryHistory, createMemoryHistory } from 'history';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute, AuthorizationStatus, BASE_OFFER_ROUTE } from '../../const';
 import { App } from './app';
 import { withHistory, withStore } from '../../tests/mock-component';
-import { makeFakeUser, makeFakeStore, makeFakeCurrentOffer } from '../../tests/mocks';
+import { makeFakeUser, makeFakeStore } from '../../tests/mocks';
 
 describe('Application Routing', () => {
   let mockHistory: MemoryHistory;
@@ -47,10 +47,10 @@ describe('Application Routing', () => {
 
   it('should render "OfferScreen" when user navigate to "/offer"', () => {
     const withHistoryComponent = withHistory(<App />, mockHistory);
-    const { withStoreComponent } = withStore(withHistoryComponent, makeFakeStore());
-    const fakeOffer = makeFakeCurrentOffer();
+    const fakeStore = makeFakeStore();
+    const { withStoreComponent } = withStore(withHistoryComponent, fakeStore);
 
-    mockHistory.push(`${AppRoute.Offer}${fakeOffer.id}`);
+    mockHistory.push(`${BASE_OFFER_ROUTE}${fakeStore.OFFERS.currentOffer?.id}`);
 
     render(withStoreComponent);
 

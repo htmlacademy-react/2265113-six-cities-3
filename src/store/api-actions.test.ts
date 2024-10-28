@@ -23,11 +23,11 @@ describe('Async actions', () => {
   });
 
   describe('updateOfferFavoriteStatusAction', () => {
-    it('should dispatch "updateOfferFavoriteStatusAction.pending", "updateOfferFavoriteStatusAction.rejected", when server response 214', async() => {
+    it('should dispatch "updateOfferFavoriteStatusAction.pending", "updateOfferFavoriteStatusAction.fulfilled", when server response 214', async() => {
       const mockOffer = makeFakeOffer();
       const mockId = mockOffer.id;
       const status = mockOffer.isFavorite ? 0 : 1;
-      mockAxiosAdapter.onPost(`${APIRoute.Favorite}/${mockId}/${status}`).reply(214, mockOffer);
+      mockAxiosAdapter.onPost(`${APIRoute.Favorite}/${mockId}/${status}`).reply(214, mockOffer.id);
 
       await store.dispatch(updateOfferFavoriteStatusAction({id: mockId, favoriteStatus: mockOffer.isFavorite}));
 
@@ -36,7 +36,7 @@ describe('Async actions', () => {
 
       expect(extractedActionsTypes).toEqual([
         updateOfferFavoriteStatusAction.pending.type,
-        updateOfferFavoriteStatusAction.rejected.type,
+        updateOfferFavoriteStatusAction.fulfilled.type,
       ]);
     });
   });

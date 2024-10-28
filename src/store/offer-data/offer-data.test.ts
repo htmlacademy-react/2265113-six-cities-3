@@ -1,4 +1,4 @@
-import { changeActiveOfferId, changeSort, offerData, resetSort } from './offer-data';
+import { changeActiveOfferId, changeSort, offerData, resetFavorites, resetSort } from './offer-data';
 import { Sorts } from '../../const';
 import { makeFakeCurrentOffer, makeFakeOffer, makeFakeOffers } from '../../tests/mocks';
 import { fetchCurrentOfferAction, fetchFavoriteOffersAction, fetchNearestOfferAction, fetchOffersAction, updateOfferFavoriteStatusAction } from '../api-actions';
@@ -70,6 +70,35 @@ describe('OfferData Slice', () => {
     const result = offerData.reducer(initialState, resetSort);
 
     expect(result.sortOffers).toEqual(expectedSorts);
+  });
+
+  it('should reset favoriteOffers with "resetFavorites" action', () => {
+    const mockOffer = makeFakeOffer();
+    mockOffer.isFavorite = true;
+    const expectedOffer = structuredClone(mockOffer);
+    expectedOffer.isFavorite = false;
+    const initialState = {
+      offers: [mockOffer],
+      favoriteOffers: [mockOffer],
+      currentOffer: null,
+      nearestOffers: [],
+      isOffersDataLoading: false,
+      sortOffers: Sorts.TOP_RATED_FIRST,
+      activeOfferId: null
+    };
+    const expectedState = {
+      offers: [expectedOffer],
+      favoriteOffers: [],
+      currentOffer: null,
+      nearestOffers: [],
+      isOffersDataLoading: false,
+      sortOffers: Sorts.TOP_RATED_FIRST,
+      activeOfferId: null
+    };
+
+    const result = offerData.reducer(initialState, resetFavorites);
+
+    expect(result).toEqual(expectedState);
   });
 
   it('should change activeOfferId with "changeActiveOfferId" action', () => {
@@ -159,8 +188,25 @@ describe('OfferData Slice', () => {
     expect(result.isOffersDataLoading).toEqual(expectedIsOffersDataLoading);
   });
 
+  it('should set "isOffersDataLoading" to "false" with "fetchCurrentOfferAction.rejected"', () => {
+    const initialState = {
+      offers: [],
+      favoriteOffers: [],
+      currentOffer: null,
+      nearestOffers: [],
+      isOffersDataLoading: true,
+      sortOffers: Sorts.TOP_RATED_FIRST,
+      activeOfferId: null
+    };
+    const expectedIsOffersDataLoading = false;
+
+    const result = offerData.reducer(initialState, fetchCurrentOfferAction.rejected);
+
+    expect(result.isOffersDataLoading).toBe(expectedIsOffersDataLoading);
+  });
+
   it('should set "currentOffer" to array with currentOffer, "isOffersDataLoading" to "false" with "fetchCurrentOfferAction.fulfilled"', () => {
-    const mockCurrentOffer = makeFakeCurrentOffer();
+    const mockCurrentOffer = makeFakeCurrentOffer(makeFakeOffer());
     const initialState = {
       offers: [],
       favoriteOffers: [],
@@ -193,10 +239,31 @@ describe('OfferData Slice', () => {
     expect(result.isOffersDataLoading).toBe(expectedIsOffersDataLoading);
   });
 
-  it('should set "favoriteOffers" to array with favoriteOffers, "isOffersDataLoading" to "false" with "fetchFavoriteOffersAction.fulfilled"', () => {
-    const mockOffers = makeFakeOffers();
+  it('should set "isOffersDataLoading" to "false" with "fetchFavoriteOffersAction.rejected"', () => {
     const initialState = {
       offers: [],
+      favoriteOffers: [],
+      currentOffer: null,
+      nearestOffers: [],
+      isOffersDataLoading: true,
+      sortOffers: Sorts.TOP_RATED_FIRST,
+      activeOfferId: null
+    };
+    const expectedIsOffersDataLoading = false;
+
+    const result = offerData.reducer(initialState, fetchFavoriteOffersAction.rejected);
+
+    expect(result.isOffersDataLoading).toBe(expectedIsOffersDataLoading);
+  });
+
+  it('should set "favoriteOffers" to array with favoriteOffers, "isOffersDataLoading" to "false" with "fetchFavoriteOffersAction.fulfilled"', () => {
+    const mockOffers = makeFakeOffers();
+    const expectedOffers = [...mockOffers];
+    expectedOffers.forEach((offer) => {
+      offer.isFavorite = true;
+    });
+    const initialState = {
+      offers: mockOffers,
       favoriteOffers: [],
       currentOffer: null,
       nearestOffers: [],
@@ -210,6 +277,7 @@ describe('OfferData Slice', () => {
 
     expect(result.favoriteOffers).toEqual(mockOffers);
     expect(result.isOffersDataLoading).toBe(expectedIsOffersDataLoading);
+    expect(result.offers).toEqual(expectedOffers);
   });
 
   it('should set "nearestOffers" to array with nearestOffers with "fetchNearestOfferAction.fulfilled"', () => {
@@ -231,7 +299,9 @@ describe('OfferData Slice', () => {
 
   it('should set "offers" to array with offers with "updateOfferFavoriteStatusAction.fulfilled"', () => {
     const mockOffer = makeFakeOffer();
-    const mockFavoriteStatus = true;
+    const mockFavoriteStatus = false;
+    const expectedOffer = structuredClone(mockOffer);
+    expectedOffer.isFavorite = true;
 
     mockOffer.isFavorite = mockFavoriteStatus;
 
@@ -246,7 +316,7 @@ describe('OfferData Slice', () => {
     };
 
     const result = offerData.reducer(initialState, updateOfferFavoriteStatusAction.fulfilled(
-      [mockOffer],
+      mockOffer.id,
       '',
       {
         id: mockOffer.id,
@@ -254,6 +324,33 @@ describe('OfferData Slice', () => {
       }
     ));
 
-    expect(result.favoriteOffers).toEqual([mockOffer]);
+    expect(result.favoriteOffers).toEqual([expectedOffer]);
+  });
+
+  it('should change offer favorite status with "updateOfferFavoriteStatusAction.fulfilled" action', () => {
+    const mockOffer = makeFakeOffer();
+    mockOffer.isFavorite = true;
+    const expectedOffer = structuredClone(mockOffer);
+    expectedOffer.isFavorite = false;
+    const initialState = {
+      offers: [mockOffer],
+      favoriteOffers: [],
+      currentOffer: null,
+      nearestOffers: [],
+      isOffersDataLoading: false,
+      sortOffers: Sorts.POPULAR,
+      activeOfferId: null
+    };
+
+    const result = offerData.reducer(initialState, updateOfferFavoriteStatusAction.fulfilled(
+      mockOffer.id,
+      '',
+      {
+        id: mockOffer.id,
+        favoriteStatus: mockOffer.isFavorite
+      }
+    ));
+
+    expect(result.offers).toEqual([expectedOffer]);
   });
 });

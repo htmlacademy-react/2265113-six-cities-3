@@ -37,6 +37,7 @@ export const OfferScreen = (): JSX.Element => {
 
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);
   const nearestOffers = useAppSelector(selectNearestOffers).slice(NearestOffers.FIRST_OFFER, NearestOffers.LAST_OFFER);
+  const filteredOffers = offers.filter((offer) => !!nearestOffers.find((nearestOffer) => nearestOffer.id === offer.id));
 
   if (!currentOffer) {
     return <div>Offer not found</div>;
@@ -130,14 +131,14 @@ export const OfferScreen = (): JSX.Element => {
           <section className="offer__map map">
             <Map
               city={currentOffer.city}
-              points={nearestOffers}
+              points={filteredOffers}
             />
           </section>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <OfferList offers={nearestOffers} cardType={CardType.NEAR} />
+            <OfferList offers={filteredOffers} cardType={CardType.NEAR} />
           </section>
         </div>
       </main>
