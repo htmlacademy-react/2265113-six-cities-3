@@ -1,14 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import { FavoritesButton } from './favorites-button';
 import { withHistory, withStore } from '../../tests/mock-component';
-import { makeFakeOffer, makeFakeStore } from '../../tests/mocks';
+import { makeFakeStore } from '../../tests/mocks';
 
 describe('Component: FavoritesButton', () => {
-  const fakeOffer = makeFakeOffer();
+  const fakeStore = makeFakeStore();
   const expectedTestId = 'favoriteButton';
 
   it('should render correctly when this button from Favorites and Main pages', () => {
-    const { withStoreComponent } = withStore(<FavoritesButton buttonType={0} offer={fakeOffer} />, makeFakeStore());
+    const { withStoreComponent } = withStore(<FavoritesButton buttonType={0} offer={fakeStore.OFFERS.offers[0]} />, fakeStore);
     const preparedComponent = withHistory(withStoreComponent);
 
     render(preparedComponent);
@@ -18,7 +18,7 @@ describe('Component: FavoritesButton', () => {
   });
 
   it('should render correctly when this button from Offer page', () => {
-    const { withStoreComponent } = withStore(<FavoritesButton buttonType={1} offer={fakeOffer} />, makeFakeStore());
+    const { withStoreComponent } = withStore(<FavoritesButton buttonType={1} offer={fakeStore.OFFERS.offers[0]} />, fakeStore);
     const preparedComponent = withHistory(withStoreComponent);
 
     render(preparedComponent);

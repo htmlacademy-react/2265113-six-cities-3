@@ -20,7 +20,9 @@ export const App = (): JSX.Element => {
   useEffect(() => {
     dispatch(checkAuthAction());
     dispatch(fetchOffersAction());
+  }, [dispatch]);
 
+  useEffect(() => {
     if (authorizationStatus === AuthorizationStatus.Auth) {
       dispatch(fetchFavoriteOffersAction());
     }

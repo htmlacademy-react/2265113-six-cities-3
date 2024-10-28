@@ -5,6 +5,7 @@ import { AppRoute, AuthorizationStatus } from '../../const';
 import { selectUserData, selectAuthorizationStatus } from '../../store/user-process/selectors';
 import { selectFavoriteOffers } from '../../store/offer-data/selectors';
 import { logoutAction } from '../../store/api-actions';
+import { resetFavorites } from '../../store/offer-data/offer-data';
 
 export const Header = () => {
   const dispatch = useAppDispatch();
@@ -37,6 +38,7 @@ export const Header = () => {
                         <Link className="header__nav-link" to={AppRoute.Login} onClick={(evt) => {
                           evt.preventDefault();
                           dispatch(logoutAction());
+                          dispatch(resetFavorites());
                         }}
                         >
                           <span className="header__signout">Sign out</span>

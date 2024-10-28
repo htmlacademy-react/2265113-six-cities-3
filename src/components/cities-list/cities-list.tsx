@@ -1,5 +1,5 @@
 import { Cities } from '../../const';
-import { CitiesItem } from '../cities-item.txs/cities-item';
+import { CitiesItem } from '../cities-item/cities-item';
 
 export const CitiesList = (): JSX.Element => (
   <ul className="locations__list tabs__list" data-testid='citiesList'>

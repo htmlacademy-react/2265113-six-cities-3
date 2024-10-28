@@ -43,21 +43,8 @@ export const makeFakeComments = (): CommentsData => ({
   }))
 });
 
-export const makeFakeCurrentOffer = (): CurrentOffer => ({
-  id: name.title(),
-  title: name.title(),
-  type: name.title(),
-  price: datatype.number(),
-  previewImage: internet.avatar(),
-  city: Object.values(Cities)[Math.floor(Math.random() * Object.entries(Cities).length)],
-  location: {
-    latitude: datatype.number(),
-    longitude: datatype.number(),
-    zoom: datatype.number(),
-  },
-  isFavorite: datatype.number() > datatype.number(),
-  isPremium: datatype.number() < datatype.number(),
-  rating: datatype.number(),
+export const makeFakeCurrentOffer = (offer: Offer): CurrentOffer => ({
+  ...offer,
   images: new Array(6).fill(null).map(() => internet.avatar()),
   description: name.title(),
   goods: new Array(6).fill(null).map(() => name.title()),
@@ -74,15 +61,18 @@ export type AppThunkDispatch = ThunkDispatch<State, ReturnType<typeof createAPI>
 
 export const extractActionsTypes = (actions: Action<string>[]) => actions.map(({type}) => type);
 
+const offers = makeFakeOffers();
+const currentOffer = makeFakeCurrentOffer(offers[0]);
+
 export const makeFakeStore = (initialState?: Partial<State>): State => ({
   USER: {
     authorizationStatus: AuthorizationStatus.Auth,
     user: null
   },
   OFFERS: {
-    offers: makeFakeOffers(),
+    offers: offers,
     favoriteOffers: [],
-    currentOffer: makeFakeCurrentOffer(),
+    currentOffer: currentOffer,
     nearestOffers: makeFakeOffers(),
     isOffersDataLoading: false,
     sortOffers: '',

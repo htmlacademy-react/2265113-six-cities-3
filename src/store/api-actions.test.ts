@@ -23,11 +23,11 @@ describe('Async actions', () => {
   });
 
   describe('updateOfferFavoriteStatusAction', () => {
-    it('should dispatch "updateOfferFavoriteStatusAction.pending", "updateOfferFavoriteStatusAction.rejected", when server response 214', async() => {
+    it('should dispatch "updateOfferFavoriteStatusAction.pending", "updateOfferFavoriteStatusAction.fulfilled", when server response 214', async() => {
       const mockOffer = makeFakeOffer();
       const mockId = mockOffer.id;
       const status = mockOffer.isFavorite ? 0 : 1;
-      mockAxiosAdapter.onPost(`${APIRoute.Favorite}/${mockId}/${status}`).reply(214, mockOffer);
+      mockAxiosAdapter.onPost(`${APIRoute.Favorite}/${mockId}/${status}`).reply(214, mockOffer.id);
 
       await store.dispatch(updateOfferFavoriteStatusAction({id: mockId, favoriteStatus: mockOffer.isFavorite}));
 
@@ -36,7 +36,7 @@ describe('Async actions', () => {
 
       expect(extractedActionsTypes).toEqual([
         updateOfferFavoriteStatusAction.pending.type,
-        updateOfferFavoriteStatusAction.rejected.type,
+        updateOfferFavoriteStatusAction.fulfilled.type,
       ]);
     });
   });
@@ -130,7 +130,7 @@ describe('Async actions', () => {
 
   describe('fetchCurrentOfferAction', () => {
     it('should dispatch "fetchCurrentOfferAction.pending", "fetchCurrentOfferAction.fulfilled", when server response 200', async() => {
-      const mockCurrentOffer = makeFakeCurrentOffer();
+      const mockCurrentOffer = makeFakeCurrentOffer(makeFakeOffer());
       const mockId = mockCurrentOffer.id;
       mockAxiosAdapter.onGet(`${APIRoute.Offers}/${mockId}`).reply(200, mockCurrentOffer);
 
@@ -153,7 +153,7 @@ describe('Async actions', () => {
   describe('fetchCommentsAction', () => {
     it('should dispatch "fetchCommentsAction.pending", "fetchCommentsAction.fulfilled", when server response 200', async() => {
       const mockComments = makeFakeComments();
-      const mockCurrentOffer = makeFakeCurrentOffer();
+      const mockCurrentOffer = makeFakeCurrentOffer(makeFakeOffer());
       const mockId = mockCurrentOffer.id;
       mockAxiosAdapter.onGet(`${APIRoute.Comments}/${mockId}`).reply(200, mockComments);
 
@@ -176,7 +176,7 @@ describe('Async actions', () => {
   describe('postCommentAction', () => {
     it('should dispatch "postCommentAction.pending", "postCommentAction.fulfilled", when server response 200', async() => {
       const mockComments = makeFakeComments();
-      const mockCurrentOffer = makeFakeCurrentOffer();
+      const mockCurrentOffer = makeFakeCurrentOffer(makeFakeOffer());
       const mockId = mockCurrentOffer.id;
       const rating = 3;
       const comment = '123';
@@ -222,7 +222,7 @@ describe('Async actions', () => {
   describe('fetchNearestOfferAction', () => {
     it('should dispatch "fetchNearestOfferAction.pending", "fetchNearestOfferAction.fulfilled", when server response 200', async() => {
       const mockNearestOffers = makeFakeOffers();
-      const mockCurrentOffer = makeFakeCurrentOffer();
+      const mockCurrentOffer = makeFakeCurrentOffer(makeFakeOffer());
       const mockId = mockCurrentOffer.id;
       mockAxiosAdapter.onGet(`${APIRoute.Offers}/${mockId}/nearby`).reply(200, mockNearestOffers);
 

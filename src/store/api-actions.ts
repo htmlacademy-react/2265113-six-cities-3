@@ -137,7 +137,7 @@ export const fetchNearestOfferAction = createAsyncThunk<Offer[], Offer, {
   }
 );
 
-export const updateOfferFavoriteStatusAction = createAsyncThunk<Offer[], {id: string; favoriteStatus: boolean}, {
+export const updateOfferFavoriteStatusAction = createAsyncThunk<string, {id: string; favoriteStatus: boolean}, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
@@ -146,7 +146,7 @@ export const updateOfferFavoriteStatusAction = createAsyncThunk<Offer[], {id: st
   async ({id, favoriteStatus}, {extra: api}) => {
     const status = favoriteStatus ? 0 : 1;
     await api.post(`${APIRoute.Favorite}/${id}/${status}`);
-    const { data } = await api.get<Offer[]>(APIRoute.Offers);
+    const data = id;
 
     return data;
   }
